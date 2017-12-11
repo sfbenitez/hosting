@@ -8,9 +8,9 @@ nombredominio: hosting4all.com
 base de datos: postgres
 
 posibles mejoras:
-poder ejecutar python en el servidor
-Configuración de estadísticas Webs
-Utilización de cuotas(script)
-Aplicación web para la gestión del hosting(bottle)
-Usuarios virtuales con LDAP
+poder ejecutar python en el servidor,
+Configuración de estadísticas Webs,
+Utilización de cuotas(script),
+Aplicación web para la gestión del hosting(bottle),
+Usuarios virtuales con LDAP,
 Creación de subdominios
