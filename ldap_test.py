@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
 ########## initialize connection ###############################################
-
 import ldap
+import os
+
+
 con = ldap.initialize('ldap://172.22.200.116')
 
 # At this point, we're connected as an anonymous user
@@ -45,7 +48,7 @@ def ldap_search(UID):
 #
 # dn = "uid=maarten,ou=people,dc=example,dc=com"
 # modlist = {
-#            "objectClass": ["inetOrgPerson", "posixAccount", "shadowAccount"],
+#            "objectClass": ["top","inetOrgPerson", "posixAccount", "person"],
 #            "uid": ["maarten"],
 #            "sn": ["De Paepe"],
 #            "givenName": ["Maarten"],
@@ -53,8 +56,10 @@ def ldap_search(UID):
 #            "displayName": ["Maarten De Paepe"],
 #            "uidNumber": ["5000"],
 #            "gidNumber": ["10000"],
+#            "mail": ["example@gmail.com"],
+#            "userPassword": ["10{SHA}hRNsecv5/ja7nQXQY5xwwmXBjTc=000"],
 #            "loginShell": ["/bin/bash"],
-#            "homeDirectory": ["/home/maarten"]}
+#            "homeDirectory": ["/var/www/hosting/usuario"]}
 #           }
 # # addModList transforms your dictionary into a list that is conform to ldap input.
 # result = con.add_s(dn, ldap.modlist.addModlist(modlist))
@@ -76,6 +81,46 @@ def ldap_search(UID):
 # dn = "uid=maarten,ou=people,dc=example,cd=com"
 # con.delete_s(dn)
 
+
+# ########## buscar informacion de un UID en el ldap #################################################
+
+# uid=raw_input("Introduce un UID a buscar: ")
+# busqueda=ldap_search(uid)
+# print busqueda
+
+# ########## pasos de creacion de nuevo usuario #################################################
+# Si el usuario o el nombre del dominio existen, no se continua.
+
 uid=raw_input("Introduce un UID a buscar: ")
 busqueda=ldap_search(uid)
-print busqueda
+if len(busqueda)!=0:
+    print 'usuario existe'
+else:
+    print 'puede crearse el usuario %s' %(uid)
+    #añadir pasos de la creacion del usuario
+
+# Se creará el directorio personal del usuario, este directorio será el DocumentRoot del servidor web. En este directorio se tendrá que crear una página web de bienvenida.
+
+#if not os.path.exists('/var/www/hosting/usuario'):
+#     os.mkdir('/var/www/hosting/usuario')
+
+# añadir DocumentRoot al fichero virtualhost
+# crear pagina web bienvenida
+
+# Se creará un nuevo virtual hosting (www.nombrededomino.com) con el DocumentRoot apuntando al directorio personal que anteriormente hemos instalado.
+
+
+
+# Se creará un nuevo usuario virtual para el acceso por FTP. El administrador decidirá la política para generar la contraseña. Dicha contraseña generada tendrá que visualizarse por pantalla. La contraseña será guardada en la base de datos encriptada.
+
+
+
+# Se creará un nuevo usuario en el gestor de base de datos mysql, se debe llamar mynombredeusuario, la contraseña que se genere para mysql debe ser distinta a la generada para la gestión del FTP y también se debe mostrar.
+
+
+
+# Se creará una nueva zona nombrededominio.com en el servidor DNS bind9 con las zonas de resolución directa e inversa que permitan conocer los distintos nombres (www,ftp, mysql, ...)
+
+
+# creacion de cuota
+#http://somebooks.es/9-6-cuotas-de-disco/
