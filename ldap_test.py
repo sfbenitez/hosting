@@ -2,9 +2,9 @@
 ########## initialize connection ###############################################
 import ldap
 import os
+import jinja2
 
-
-con = ldap.initialize('ldap://172.22.200.116')
+#con = ldap.initialize('ldap://172.22.200.116')
 
 # At this point, we're connected as an anonymous user
 # If we want to be associated to an account
@@ -91,20 +91,39 @@ def ldap_search(UID):
 # ########## pasos de creacion de nuevo usuario #################################################
 # Si el usuario o el nombre del dominio existen, no se continua.
 
-uid=raw_input("Introduce un UID a buscar: ")
-busqueda=ldap_search(uid)
-if len(busqueda)!=0:
-    print 'usuario existe'
-else:
-    print 'puede crearse el usuario %s' %(uid)
-    #añadir pasos de la creacion del usuario
+# uid=raw_input("Introduce un UID a buscar: ")
+# busqueda=ldap_search(uid)
+# if len(busqueda)!=0:
+#     print 'usuario existe'
+# else:
+#     print 'puede crearse el usuario %s' %(uid)
+#     #añadir pasos de la creacion del usuario
 
 # Se creará el directorio personal del usuario, este directorio será el DocumentRoot del servidor web. En este directorio se tendrá que crear una página web de bienvenida.
+
+# crear directorio
 
 #if not os.path.exists('/var/www/hosting/usuario'):
 #     os.mkdir('/var/www/hosting/usuario')
 
 # añadir DocumentRoot al fichero virtualhost
+
+
+def render(tpl_path, context):
+    path, filename = os.path.split(tpl_path)
+    return jinja2.Environment(
+        loader=jinja2.FileSystemLoader(path or './')
+    ).get_template(filename).render(context)
+
+context = {
+    'servername': 'www.prueba.com',
+    'documentroot': '/var/www/prueba'
+}
+
+result = render('templates/virtualhost.tpl', context)
+
+print(result)
+
 # crear pagina web bienvenida
 
 # Se creará un nuevo virtual hosting (www.nombrededomino.com) con el DocumentRoot apuntando al directorio personal que anteriormente hemos instalado.
