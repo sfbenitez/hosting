@@ -15,3 +15,9 @@ Utilización de cuotas(script),
 Aplicación web para la gestión del hosting(bottle),
 Usuarios virtuales con LDAP, 
 Creación de subdominios
+
+requisitos:
+
+- python-ldap
+
+apt-get install python-dev libldap2-dev libsasl2-dev
