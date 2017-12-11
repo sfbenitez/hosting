@@ -12,11 +12,31 @@ con = ldap.initialize('ldap://172.22.200.116')
 
 ########## performing a simple ldap query ####################################
 def ldap_search(UID):
-    ldap_base = "dc=sergio,dc=gonzalonazareno,dc=org"
-    query = "(uid=%s)"%(UID)
-    result = con.search_s(ldap_base, ldap.SCOPE_SUBTREE, query)
 
-    return result
+	baseDN = "dc=sergio,dc=gonzalonazareno,dc=org"
+	searchScope = ldap.SCOPE_SUBTREE
+	## retrieve all attributes - again adjust to your needs - see documentation for more options
+	retrieveAttributes = None
+	searchFilter = 'uid=%s'%(UID)
+
+	try:
+		ldap_result_id = con.search(baseDN, searchScope, searchFilter, retrieveAttributes)
+		result_set = []
+		while 1:
+			result_type, result_data = con.result(ldap_result_id, 0)
+			if (result_data == []):
+				break
+			else:
+				## here you don't have to append to a list
+				## you could do whatever you want with the individual entry
+				## The appending to list is just for illustration.
+				if result_type == ldap.RES_SEARCH_ENTRY:
+					result_set.append(result_data)
+		resultado = result_set
+	except ldap.LDAPError, e:
+		print e
+
+        return resultado
 
 # ########## adding (a user) ####################################################
 # # make sure all input strings are str and not unicode
