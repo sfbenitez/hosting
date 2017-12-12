@@ -3,6 +3,7 @@
 import ldap
 import os
 import jinja2
+from passlib.hash import sha256_crypt
 
 #con = ldap.initialize('ldap://172.22.200.116')
 
@@ -108,30 +109,51 @@ def ldap_search(UID):
 
 # añadir DocumentRoot al fichero virtualhost
 
+# ########## creacion template jinja2  #################################################
 
-def render(tpl_path, context):
-    path, filename = os.path.split(tpl_path)
-    return jinja2.Environment(
-        loader=jinja2.FileSystemLoader(path or './')
-    ).get_template(filename).render(context)
+# def render(tpl_path, context):
+#     path, filename = os.path.split(tpl_path)
+#     return jinja2.Environment(
+#         loader=jinja2.FileSystemLoader(path or './')
+#     ).get_template(filename).render(context)
+#
+# context = {
+#     'servername': 'www.prueba.com',
+#     'documentroot': '/var/www/prueba'
+# }
+#
+# result = render('templates/virtualhost.tpl', context)
+#
+# print(result)
 
-context = {
-    'servername': 'www.prueba.com',
-    'documentroot': '/var/www/prueba'
-}
-
-result = render('templates/virtualhost.tpl', context)
-
-print(result)
+# comprobar esto para guardar el documento como fichero
+# http://jinja.pocoo.org/docs/dev/api/#jinja2.environment.TemplateStream.dump
 
 # crear pagina web bienvenida
 
 # Se creará un nuevo virtual hosting (www.nombrededomino.com) con el DocumentRoot apuntando al directorio personal que anteriormente hemos instalado.
 
-
-
 # Se creará un nuevo usuario virtual para el acceso por FTP. El administrador decidirá la política para generar la contraseña. Dicha contraseña generada tendrá que visualizarse por pantalla. La contraseña será guardada en la base de datos encriptada.
 
+# ########## creacion de contraseña #################################################
+
+# class Create_password():
+#
+#     def __init__(self, username, password):
+#         self.username = username
+#         self.pw_hash = sha256_crypt.encrypt(password)
+#
+#     def verify(self, password):
+#         return sha256_crypt.verify(password, self.pw_hash)
+#
+# username=raw_input("Introduce un nombre de usuario: ")
+# userpass=raw_input("Introduce la contraseña del usuario: ")
+#
+# #generacion de contraseña
+# new_pass = Create_password(username,userpass)
+#
+# print "verificar si la contraseña es %s" %(username)
+# print(new_pass.verify(userpass))
 
 
 # Se creará un nuevo usuario en el gestor de base de datos mysql, se debe llamar mynombredeusuario, la contraseña que se genere para mysql debe ser distinta a la generada para la gestión del FTP y también se debe mostrar.
