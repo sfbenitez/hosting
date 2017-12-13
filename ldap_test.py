@@ -5,7 +5,7 @@ import os
 import jinja2
 from passlib.hash import sha256_crypt
 
-#con = ldap.initialize('ldap://172.22.200.116')
+con = ldap.initialize('ldap://172.22.200.116')
 
 # At this point, we're connected as an anonymous user
 # If we want to be associated to an account
@@ -104,8 +104,8 @@ def ldap_search(UID):
 
 # crear directorio
 
-#if not os.path.exists('/var/www/hosting/usuario'):
-#     os.mkdir('/var/www/hosting/usuario')
+#if not os.path.exists('/srv/hosting/usuario'):
+#     os.mkdir('/srv/hosting/usuario')
 
 # añadir DocumentRoot al fichero virtualhost
 
