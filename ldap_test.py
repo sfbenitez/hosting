@@ -108,8 +108,8 @@ def ldap_changepass(v_uid,v_old,v_new):
 
 ### crear directorio
 
-#if not os.path.exists('/var/www/hosting/usuario'):
-#     os.mkdir('/var/www/hosting/usuario')
+#if not os.path.exists('/srv/hosting/usuario'):
+#     os.mkdir('/srv/hosting/usuario')
 
 
 ##### creacion template jinja2
