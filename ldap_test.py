@@ -171,6 +171,36 @@ class Create_password():
 
 # Se creará una nueva zona nombrededominio.com en el servidor DNS bind9 con las zonas de resolución directa e inversa que permitan conocer los distintos nombres (www,ftp, mysql, ...)
 
+# #### añadir zona dns de un usuario
+#
+# def addzone(path,user):
+#     zonasdns = open(path,"a")
+#     userfile='userfil3e'
+#     zona='//%s\nzone "%s.hosting4all.org" {\n type master;\n file "%s.db";}\n;\n//%s\n' %(user,user,userfile,user)
+#     zonasdns.write(zona)
+#     zonasdns.close()
+#
+# path='templates/named.conf.local'
+# user='usuari2233o'
+#
+# addzone(path,user)
+
+##### eliminar zona dns de un usuario
+#
+# def rmblock(path, block):
+#     lines = open(path).readlines()
+#     blockstart = lines.index(block + "\n")
+#     print blockstart
+#     blockend = blockstart+6
+#     print blockend
+#     del(lines[blockstart:blockend])
+#     open(path, 'w+').writelines(lines)
+#
+# # ruta del fichero conf.local y usuario a eliminar
+# path='templates/named.conf.local'
+# rmblock(path,'//usuari22o')
+
+#### Zonas directas
 # zonafree = {
 #      'user': 'sfbenitez',
 # }
@@ -183,6 +213,7 @@ class Create_password():
 # zonapremium = {
 #      'user': 'sfbenitez',
 # }
+#
 # renderzonapremium = render('templates/zonadirectapremium.tpl', zonapremium)
 # with open("db.userpremium", "wb") as f:
 # 	f.write(renderzonapremium)
