@@ -171,7 +171,22 @@ class Create_password():
 
 # Se creará una nueva zona nombrededominio.com en el servidor DNS bind9 con las zonas de resolución directa e inversa que permitan conocer los distintos nombres (www,ftp, mysql, ...)
 
-
-
+# zonafree = {
+#      'user': 'sfbenitez',
+# }
+# renderzonafree = render('templates/zonadirectafree.tpl', zonafree)
+# with open("db.userfree", "wb") as f:
+# 	f.write(renderzonafree)
+# 	f.close()
+# # print(renderzonafree)
+#
+# zonapremium = {
+#      'user': 'sfbenitez',
+# }
+# renderzonapremium = render('templates/zonadirectapremium.tpl', zonapremium)
+# with open("db.userpremium", "wb") as f:
+# 	f.write(renderzonapremium)
+# 	f.close()
+# print(renderzonapremium)
 # creacion de cuota
 #http://somebooks.es/9-6-cuotas-de-disco/
