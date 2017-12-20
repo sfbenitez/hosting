@@ -20,5 +20,5 @@ from hosting import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index),
-    path('dashboard', views.dashboard),
+    # path('dashboard', views.dashboard),
 ]

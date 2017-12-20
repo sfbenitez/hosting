@@ -24,7 +24,7 @@ def index(request):
 @login_required(login_url='/')
 def salir(request):
     logout(request)
-return redirect('/')
+    return redirect('/')
 
 # def index(request):
 #     tittle='Título'
