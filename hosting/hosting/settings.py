@@ -56,6 +56,29 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+# LDAP Config
+# The URL of the LDAP server.
+LDAP_AUTH_URL = "ldap://10.0.5.2:389"
+# Initiate TLS on connection.
+LDAP_AUTH_USE_TLS = False
+# The LDAP search base for looking up users.
+LDAP_AUTH_SEARCH_BASE = "ou=People,dc=ferrete,dc=gonzalonazareno,dc=org"
+# The LDAP class that represents a user.
+LDAP_AUTH_OBJECT_CLASS = "inetOrgPerson"
+# User model fields mapped to the LDAP
+# attributes that represent them.
+LDAP_AUTH_USER_FIELDS = {
+    "username": "uid",
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+}
+# A tuple of django model fields used to uniquely identify a user.
+LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
+# function searching for a specific gidNumber
+LDAP_AUTH_FORMAT_SEARCH_FILTERS = "hosting.module.custom_format_search_filters"
+
+
 ROOT_URLCONF = 'hosting.urls'
 
 TEMPLATES = [
