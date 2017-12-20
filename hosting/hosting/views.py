@@ -14,7 +14,7 @@ def index(request):
 			context={'error':True}
 		else:
 			login(request, user)
-			return redirect('/users')
+			return redirect('/user/dashboard')
 	return render(request, 'login.html',context)
 
 @login_required(login_url='/')
