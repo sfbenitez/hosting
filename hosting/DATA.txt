@@ -1,0 +1,20 @@
+LDAP:
+Usuario y contraseña para la autenticación
+Datos personales
+DocumentRoot para apache y ftp
+
+Postgresql:
+Tabla Users:
+  user
+  pg_password
+  ftp_password
+  fecha_alta
+  rol_id
+
+Tabla roles:
+  rol_id
+  description
+
+Tabla dominios:
+  domain_name
+  user
