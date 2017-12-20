@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'hosting.app.HostingConfig',
+    'django_python3_ldap',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +49,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django_python3_ldap.auth.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = 'hosting.urls'
@@ -80,7 +86,7 @@ DATABASES = {
         'NAME': 'db_hosting',
         'USER': 'admin',
         'PASSWORD': 'usuario',
-        'HOST': '172.22.200.116',
+        'HOST': '10.0.5.2',
         'PORT': '5432',
     }
 }
