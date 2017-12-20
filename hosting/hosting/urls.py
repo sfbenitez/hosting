@@ -22,4 +22,5 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index),
     path('user',  include('users.urls')),
+    url(r'^logout/$',views.salir),
 ]
