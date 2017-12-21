@@ -15,7 +15,7 @@ def index(request):
 		else:
 			login(request, user)
 			return redirect('/user/dashboard')
-	return render(request, 'login.html',context)
+	return render(request, 'login.html', context)
 
 @login_required(login_url='/')
 def salir(request):

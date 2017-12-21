@@ -19,22 +19,17 @@
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                          {% if error %}
-                            <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="text" id="inputError" placeholder="Username" name="username"/>
-                            {% else %}
-                            <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="text" placeholder="Username" name="username"/>
-                          {% endif %}
+                          <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="text" placeholder="Username" name="username" required/>
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                          {% if error %}
-                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" id="inputError" placeholder="Password" name="password"/>
-                          {% else %}
-                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" placeholder="Password" name="password"/>
-                          {% endif%}
+                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" placeholder="Password" name="password" required/>
+                            <!-- {% if error %}
+
+                            {% endif %} -->
                         </div>
                     </div>
                 </div>
@@ -59,8 +54,8 @@
             </form>
         </div>
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/matrix.login.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/matrix.login.js"></script>
     </body>
 
 </html>
