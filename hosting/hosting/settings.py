@@ -60,11 +60,11 @@ AUTHENTICATION_BACKENDS = [
 
 # LDAP Config
 # The URL of the LDAP server.
-LDAP_AUTH_URL = "ldap://10.0.5.2:389"
+LDAP_AUTH_URL = "ldap://172.22.200.116:389"
 # Initiate TLS on connection.
 LDAP_AUTH_USE_TLS = False
 # The LDAP search base for looking up users.
-LDAP_AUTH_SEARCH_BASE = "ou=People,dc=ferrete,dc=gonzalonazareno,dc=org"
+LDAP_AUTH_SEARCH_BASE = "ou=People,dc=sergio,dc=gonzalonazareno,dc=org"
 # The LDAP class that represents a user.
 LDAP_AUTH_OBJECT_CLASS = "inetOrgPerson"
 # User model fields mapped to the LDAP
@@ -111,7 +111,7 @@ DATABASES = {
         'NAME': 'db_hosting',
         'USER': 'admin',
         'PASSWORD': 'usuario',
-        'HOST': '10.0.5.2',
+        'HOST': '172.22.200.116',
         'PORT': '5432',
     }
 }
