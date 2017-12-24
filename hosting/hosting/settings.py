@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for hosting project.
 
@@ -58,13 +59,13 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# LDAP Config
+# LDAP Auth Config
 # The URL of the LDAP server.
 LDAP_AUTH_URL = "ldap://10.0.5.2:389"
 # Initiate TLS on connection.
 LDAP_AUTH_USE_TLS = False
 # The LDAP search base for looking up users.
-LDAP_AUTH_SEARCH_BASE = "ou=People,dc=ferrete,dc=gonzalonazareno,dc=org"
+LDAP_AUTH_SEARCH_BASE = "ou=People,dc=sergio,dc=gonzalonazareno,dc=org"
 # The LDAP class that represents a user.
 LDAP_AUTH_OBJECT_CLASS = "inetOrgPerson"
 # User model fields mapped to the LDAP
@@ -78,7 +79,7 @@ LDAP_AUTH_USER_FIELDS = {
 # A tuple of django model fields used to uniquely identify a user.
 LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
 # function searching for a specific gidNumber
-LDAP_AUTH_FORMAT_SEARCH_FILTERS = "hosting.module.custom_format_search_filters"
+LDAP_AUTH_FORMAT_SEARCH_FILTERS = "hosting.module.gidNumber_search_filters"
 
 
 ROOT_URLCONF = 'hosting.urls'
@@ -106,8 +107,14 @@ WSGI_APPLICATION = 'hosting.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
+    'ldap': {
+        'ENGINE': 'ldapdb.backends.ldap',
+        'NAME': 'ldap://10.0.5.2',
+        'USER': 'cn=admin,dc=sergio,dc=gonzalonazareno,dc=org',
+        'PASSWORD': 'usuario',
+     },
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'db_hosting',
         'USER': 'admin',
         'PASSWORD': 'usuario',
@@ -116,6 +123,7 @@ DATABASES = {
     }
 }
 
+DATABASE_ROUTERS = ['ldapdb.router.Router']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

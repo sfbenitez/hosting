@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """hosting URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -13,14 +15,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url,include
+from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 from hosting import views
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', views.index),
     path('user/',  include('users.urls')),
-    url(r'^logout/$',views.salir),
+    path('logout/',views.salir),
 ]

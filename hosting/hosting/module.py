@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 from django_python3_ldap.utils import format_search_filters
 
-def custom_format_search_filters(ldap_fields):
+def gidNumber_search_filters(ldap_fields):
     # Add in simple filters.
     ldap_fields["gidNumber"] = "2000"
     # Call the base format callable.
