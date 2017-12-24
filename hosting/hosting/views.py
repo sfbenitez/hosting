@@ -23,21 +23,3 @@ def index(request):
 def salir(request):
     logout(request)
     return redirect('/')
-
-# def index(request):
-#     tittle='Título'
-#     variabledefuncion='Prueba'
-#     context = {
-#         'variabledehtml' : variabledefuncion,
-#         'tittle' : tittle,
-#     }
-#     return render(request, '/static/login.html', context)
-#
-# def dashboard(request):
-#     tittle='Dashboard'
-#     variabledefuncion='Prueba'
-#     context = {
-#         'variabledehtml' : variabledefuncion,
-#         'tittle' : tittle,
-#     }
-#     return render(request, '/static/dashboard.html', context)

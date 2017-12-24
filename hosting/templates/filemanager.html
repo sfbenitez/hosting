@@ -6,6 +6,11 @@
     <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="/user/filemanager" class="{{currenttopmenu}}">File Manager</a></div>
     <h1>File Manager</h1>
   </div>
+  <h1>Lista de archivos:</h1>
+  {% for archivo in lista %}
+  <li><a href="/user/filemanager/{% if parentfile %}{{parentfile}}/{{archivo}}{% else %}{{archivo}}{% endif %}">{{ archivo }}</a></li>
+  {% endfor %}
+
 </div>
 <!--end-main-container-part-->
 {% endblock %}

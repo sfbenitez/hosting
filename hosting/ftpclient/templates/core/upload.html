@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Upload</title>
+</head>
+<body>
+	<h3>Envie seu arquivo:</h3>
+	<form action="{% url 'core:upload' %}" method="post" enctype="multipart/form-data">
+    Selecione um arquivo para enviar:
+    	{% csrf_token %}
+	    <input type="file" name="file" id="file">
+	    <br>
+	    <input type="submit" value="Upload Image" name="submit">
+	</form>
+</body>
+</html>

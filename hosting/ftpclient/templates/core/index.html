@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cliente FTP</title>
+</head>
+<body>
+	<h1>Lista de arquivos:</h1>
+	{% for arquivo in lista %}
+		<li><a href="{% url 'core:baixar' arquivo %}">{{ arquivo }}</a></li>
+	{% endfor %}
+	<h4>Nota: Configure o arquivo <i>models.py</i>.</h4>
+	<p><b>IP do servidor</b>: "{{ con.url }}"</p>
+	<p><b>Porta</b>: "{{ con.porta }}"</p>
+	<p><b>Pasta de download</b>: "{{ con.urldown }}"</p>
+</body>
+</html>
