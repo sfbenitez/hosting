@@ -10,7 +10,7 @@ urlpatterns = [
     path('dashboard', views.index),
     path('filemanager/', include('ftpclient.urls')),
     path('domains/', include('domains.urls')),
-    path('databases', views.databases),
+    path('databases/', include('dbmanager.urls')),
     path('stats', views.stats),
     # path('users',  include(users.urls),
 ]

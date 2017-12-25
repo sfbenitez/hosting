@@ -6,6 +6,9 @@
     <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="/user/databases" class="{{currenttopmenu}}">DB Manager</a></div>
     <h1>Database Manager</h1>
   </div>
+  {% for db_name in db_names_list %}
+    <h4>dbname: {{ db_name }}</h4>
+  {% endfor %}
 </div>
 <!--end-main-container-part-->
 {% endblock %}

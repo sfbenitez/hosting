@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'dbmanager.app.DBmanagerConfig',
     'ftpclient.app.FtpclientConfig',
     'domains.app.DomainsConfig',
     'users.app.UsersConfig',

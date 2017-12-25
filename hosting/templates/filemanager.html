@@ -8,7 +8,7 @@
   </div>
   <h1>Lista de archivos:</h1>
   {% for archivo in lista %}
-  <li><a href="/user/filemanager/{% if parentfile %}{{parentfile}}/{{archivo}}{% else %}{{archivo}}{% endif %}">{{ archivo }}</a></li>
+  <li><a href="/user/filemanager/{% if parentfile %}{{parentfile}}/{% else %}{{archivo}}{% endif %}">{{ archivo }}</a></li>
   {% endfor %}
 
 </div>

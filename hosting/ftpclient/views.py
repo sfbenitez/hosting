@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Conecta
 from django.http import Http404
+import os
 
 def index(request):
 	conection = Conecta()
@@ -16,11 +17,14 @@ def download(request, file):
 	try:
 		print('estoy dentro')
 		return render(request, "filemanager.html", {
-		'lista':conection.chdir(file),'parentfile':file,
+		'lista':conection.chdir(file),
 		})
 	except:
 		conection.download(file)
 		return redirect("/")
+
+# def chgdir(request, file):
+#
 
 #em construção
 def upload(request):
