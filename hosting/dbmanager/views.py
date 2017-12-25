@@ -8,7 +8,6 @@ def index(request):
     title='DBmanager'
     sidebaractive='active'
     topmenu='current'
-
     db_manager_repository = repository.DBManagerRepository('sergio.ferrete', 'usuario')
     db_names = db_manager_repository.get_db_names_for_user('sergio.ferrete')
 
