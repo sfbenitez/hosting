@@ -6,9 +6,33 @@
     <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="/user/databases" class="{{currenttopmenu}}">DB Manager</a></div>
     <h1>Database Manager</h1>
   </div>
-  {% for db_name in db_names_list %}
-    <h4>dbname: {{ db_name }}</h4>
-  {% endfor %}
+  {% if db_user_not_exist %}
+    <h3>Cree su usuario para gestionar las bases de datos</h3>
+    <form id="loginform" class="form-vertical" action="/user/databases/newuser" method="post">
+      {% csrf_token %}
+      <input type="text" placeholder="Username" name="username" required/>
+      <input type="password" placeholder="Password" name="password" required/>
+      <input type="password" placeholder="Password" name="password2" required/>
+      <input type="submit" class="btn btn-success" value="Crear Usuario" />
+    </form>
+  {% else %}
+    {% if password_required or db_user_error %}
+    <form id="loginform" class="form-vertical" action="/user/databases/access" method="post">
+      {% csrf_token %}
+      <p>Cuenta para BD Manager: {{db_user}}</p>
+      <input type="password" placeholder="Password" name="password" required/>
+      {% if db_user_error %}
+        <h3>Error al autenticar con la base de datos</h3>
+      {% endif %}
+      <input type="submit" class="btn btn-success" value="Login" />
+    </form>
+    {% else %}
+        Lista de bases de datos del usuario: {{db_user}}
+      {% for db_name in db_names_list %}
+        <h4>{{ db_name }}</h4>
+      {% endfor %}
+    {% endif %}
+  {% endif %}
 </div>
 <!--end-main-container-part-->
 {% endblock %}

@@ -11,6 +11,7 @@ def index(request):
 	if 'next' in request.GET:
 		context={'next':request.GET["next"]}
 	if request.method=="POST":
+		request.session["username"] = request.POST["username"]
 		user = authenticate(username=request.POST["username"], password=request.POST["password"])
 		if user is None:
 			context={'error':True}
