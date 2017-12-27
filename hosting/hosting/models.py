@@ -12,7 +12,10 @@ class Users(models.Model):
     rol_id = models.ForeignKey(roles, on_delete=models.CASCADE)
     fecha_alta = models.DateTimeField(default=timezone.now)
 
-class UserRelations(models.Model):
-    app_user = models.CharField(max_length=50, primary_key=True)
-    bd_user = models.CharField(max_length=50)
-    ftp_user = models.CharField(max_length=50)
+class AppUserDbUserRelation(models.Model):
+    app_user = models.CharField(max_length=50, unique=True, primary_key=True)
+    db_user = models.CharField(max_length=50,unique=True)
+
+class AppUserFtpUserRelation(models.Model):
+    app_user = models.CharField(max_length=50, unique=True, primary_key=True)
+    ftp_user = models.CharField(max_length=50,unique=True)

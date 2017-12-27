@@ -23,5 +23,5 @@ app_name = 'ftpclient'
 urlpatterns = [
     path('', views.index, name='index'),
     url(r'^(?P<file>.+)$', views.download, name='download'),
-    path('^upload/$', views.upload, name='upload'),
+    # path('^upload/$', views.upload, name='upload'),
 ]

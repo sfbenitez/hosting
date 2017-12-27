@@ -27,13 +27,13 @@ def download(request, file):
 #
 
 #em construção
-def upload(request):
-	if request.method == 'POST':
-		arquivo = request.FILES['file']
-		#file = open(arquivo,'rb')
-		conection = Conecta()
-		print(dir(arquivo))
-		print(arquivo.file)
-		conection.upload(arquivo)
-		return redirect("/")
-	return render(request, "core/upload.html")
+# def upload(request):
+# 	if request.method == 'POST':
+# 		arquivo = request.FILES['file']
+# 		#file = open(arquivo,'rb')
+# 		conection = Conecta()
+# 		print(dir(arquivo))
+# 		print(arquivo.file)
+# 		conection.upload(arquivo)
+# 		return redirect("/")
+# 	return render(request, "core/upload.html")

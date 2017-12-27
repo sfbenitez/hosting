@@ -1,5 +1,6 @@
-from hosting.models import UserRelations
+from hosting.models import AppUserDbUserRelation
 import psycopg2
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 
 class CreateDBUser(object):
@@ -14,12 +15,12 @@ class CreateDBUser(object):
                                     password='usuario')
         return self.conn
 
-    def create_db_user_for_app_user(self, app_user, db_user, db_password):
-        try:
-            UserRelations.objects.create(app_user=app_user, bd_user=db_user)
-        except Exception:
-            print(Exception)
+    def _make_user_relations(self, app_user, db_user):
+        AppUserDbUserRelation.objects.create(app_user=app_user, db_user=db_user)
 
+
+    def create_db_user_for_app_user(self, app_user, db_user, db_password):
+        self._make_user_relations(app_user, db_user)
         cur = self.conn.cursor()
         cur.execute("""create role {}
                     password '{}' login createdb
@@ -31,8 +32,8 @@ class CreateDBUser(object):
 
 
 def get_db_user_for_app_user(user):
-    user_data = UserRelations.objects.get(app_user=user)
-    db_user = user_data.bd_user
+    user_data = AppUserDbUserRelation.objects.get(app_user=user)
+    db_user = user_data.db_user
     return db_user
 
 class DBManagerRepository(object):
@@ -58,3 +59,23 @@ class DBManagerRepository(object):
         cur.close()
         self.conn.close()
         return data
+
+    def create_new_db_for_user(self, db_user, db_name):
+        self.conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        cur = self.conn.cursor()
+        self.db_name="{}_{}".format(db_user,db_name)
+        try:
+            cur.execute("""create database {}""".format(self.db_name))
+        except:
+            return "Database already exist"
+        cur.close()
+        self.conn.close()
+        return self.db_name
+
+    def delete_db_for_user(self, db_name):
+        self.conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        cur = self.conn.cursor()
+        cur.execute("""drop database {}""".format(db_name))
+        cur.close()
+        self.conn.close()
+        return db_name

@@ -6,33 +6,203 @@
     <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="/user/databases" class="{{currenttopmenu}}">DB Manager</a></div>
     <h1>Database Manager</h1>
   </div>
+  <div class="container-fluid"><hr>
+    <!-- {% if db_exist %}
+    <span class="label label-important">DB exist</span>
+    {% endif %} -->
   {% if db_user_not_exist %}
-    <h3>Cree su usuario para gestionar las bases de datos</h3>
-    <form id="loginform" class="form-vertical" action="/user/databases/newuser" method="post">
-      {% csrf_token %}
-      <input type="text" placeholder="Username" name="username" required/>
-      <input type="password" placeholder="Password" name="password" required/>
-      <input type="password" placeholder="Password" name="password2" required/>
-      <input type="submit" class="btn btn-success" value="Crear Usuario" />
-    </form>
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+            <h5>New DB User</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="/user/databases/newuser" >
+              {% csrf_token %}
+              <div class="control-group">
+                <label class="control-label">DBManager Username</label>
+                <div class="controls">
+                  <input type="text" name="username" required/>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Password</label>
+                <div class="controls">
+                  <input type="password" name="pwd" required/>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Confirm password</label>
+                <div class="controls">
+                  <input type="password" name="pwd2" required/>
+                </div>
+              </div>
+              <div class="form-actions">
+                <input type="submit" value="DB User" class="btn btn-success">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
   {% else %}
-    {% if password_required or db_user_error %}
-    <form id="loginform" class="form-vertical" action="/user/databases/access" method="post">
-      {% csrf_token %}
-      <p>Cuenta para BD Manager: {{db_user}}</p>
-      <input type="password" placeholder="Password" name="password" required/>
-      {% if db_user_error %}
-        <h3>Error al autenticar con la base de datos</h3>
+    {% if password_required or db_user_auth_error %}
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+            <h5>Access DB User</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="/user/databases/bdlist" name="password_validate" id="password_validate" novalidate="novalidate">
+              {% csrf_token %}
+              <div class="control-group">
+                <label class="control-label">DBManager Username: </label>
+                <div class="controls">
+                  <input type="text" name="username" id="required" value="{{db_user}}" readonly/>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Password</label>
+                <div class="controls">
+                  <input type="password" name="password" id="password" required/>
+                </div>
+              </div>
+              {% if db_user_auth_error %}
+                Error al autenticar con la base de datos
+              {% endif %}
+              <div class="form-actions">
+                <input type="submit" value="Login DB Manager" class="btn btn-success">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+      {% else %}
+      <div class="row-fluid">
+        <div class="span6">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-hdd"></i> </span>
+              <h5>Usuario: {{db_user}}</h5>
+            </div>
+            <div class="widget-content padding">
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Lista de Bases de datos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for db_name in db_names_list %}
+                  <tr class="odd gradeA">
+                    <td>
+                      <a href="http://pandora/phppgadmin/redirect.php?subject=database&server=localhost%3A5432%3Aallow&database={{ db_name }}">{{ db_name }}</a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+            {%if db_number <= 5 or new_user %}
+            <div class="widget-title">
+              <a href="#collapseTwo" data-toggle="collapse"><h5>New Database</h5></a>
+            </div>
+            <div class="collapse" id="collapseTwo">
+              <div class="widget-content">
+                <form action="/user/databases/newdb" method="post" class="form-horizontal">
+                  {% csrf_token %}
+                  <div class="control-group">
+                    <label class="control-label">DB Name :</label>
+                    <div class="controls">
+                      <input type="text" class="span4" placeholder="db_name" name="newdbname" required/>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">Password :</label>
+                    <div class="controls">
+                      <input type="password"  class="span4" placeholder="Enter Password" name="password" required/>
+                    </div>
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Create Database</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            {% endif %}
+            <div class="widget-title">
+              <a href="#collapseThree" data-toggle="collapse"><h5>Delete database</h5></a>
+            </div>
+            <div class="collapse" id="collapseThree">
+              <div class="widget-content">
+                <form action="/user/databases/deldb" method="post" class="form-horizontal">
+                  {% csrf_token %}
+                  <div class="control-group">
+                    <label class="control-label">Delete: </label>
+                    <div class="controls">
+                      <select name="deletedatabase">
+                        {% for db_name in db_names_list %}
+                        <option>{{ db_name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">Password :</label>
+                    <div class="controls">
+                      <input type="password"  class="span4" placeholder="Enter Password" name="password" required/>
+                    </div>
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Delete Database</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- <button type="submit" class="btn btn-mini btn-primary">New Database</button> -->
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <div class="widget-box ">
+          <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+            <h5>Información</h5>
+          </div>
+          <div class="widget-title">
+            <ul class="nav nav-tabs">
+              <li class="active"><a data-toggle="tab" href="#tab1">Datos de conexión</a></li>
+              <li><a data-toggle="tab" href="#tab2">Prefijos</a></li>
+              <li><a data-toggle="tab" href="#tab3">Número máximo de bases de datos</a></li>
+              <li><a data-toggle="tab" href="#tab4">Administración de las bases de datos</a></li>
+              <li><a data-toggle="tab" href="#tab5">Seguridad</a></li>
+            </ul>
+          </div>
+          <div class="widget-content tab-content">
+            <div id="tab1" class="tab-pane active">
+              <p>Dirección ip del servidor: 172.22.200.127</p>
+              <p>Usuario: {{db_user}}</p>
+              <p>Contraseña de acceso a las bases de datos: {{db_password}}******</p>
+            </div>
+            <div id="tab2" class="tab-pane">
+              <p>Todas las bases de datos que crees tendrán como prefijo "{{db_user}}_", esto lo utiliza el sistema para diferenciar las bases de datos de cada usuario y para poder utilizar cualquier nombre para una base de datos sin que exista la posibilidad de conflicto con otros usuarios.</p>
+            </div>
+            <div id="tab3" class="tab-pane">
+              <p>El número máximo que puedes crear dependerá de tu suscripción, los usuarios normales pueden crear hasta 5 bases de datos, mientras que los usuarios premiums pueden crear 10.</p>
+            </div>
+            <div id="tab4" class="tab-pane">
+              <p>La administración de cada base de datos se realiza a través de la aplicación phpPGadmin. Si haces click sobre el nombre de una de tus bases de datos, serás redirigido hacia la aplicación.</p>
+            </div>
+            <div id="tab5" class="tab-pane">
+              <p>Por seguridad, cada vez que quieras acceder a la lista de bases de datos se requerirá tu contraseña del usuario de la base de datos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
       {% endif %}
-      <input type="submit" class="btn btn-success" value="Login" />
-    </form>
-    {% else %}
-        Lista de bases de datos del usuario: {{db_user}}
-      {% for db_name in db_names_list %}
-        <h4>{{ db_name }}</h4>
-      {% endfor %}
     {% endif %}
-  {% endif %}
+  </div>
 </div>
 <!--end-main-container-part-->
 {% endblock %}
