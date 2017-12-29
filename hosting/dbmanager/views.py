@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import psycopg2
 from . import repository
 
+@login_required
 def index(request):
     title='DBmanager'
     sidebaractive='active'
@@ -29,6 +30,7 @@ def index(request):
     context['password_required'] = True
     return render(request, 'databases.html', context)
 
+@login_required
 def db_list(request):
     title='DB List'
     sidebaractive='active'
@@ -56,7 +58,7 @@ def db_list(request):
         context['db_user_auth_error'] = db_user_error
     return render(request, 'databases.html', context)
 
-
+@login_required
 def new_db_user(request):
     title='New DBmanager User'
     sidebaractive='active'
@@ -75,6 +77,7 @@ def new_db_user(request):
     context['new_user'] = True
     return render(request, 'databases.html', context)
 
+@login_required
 def new_db(request):
     db_password=request.POST['password']
     db_name=request.POST['newdbname']
@@ -88,6 +91,7 @@ def new_db(request):
     else:
         return redirect('/user/databases')
 
+@login_required
 def del_db(request):
     db_password=request.POST['password']
     db_name=request.POST['deletedatabase']

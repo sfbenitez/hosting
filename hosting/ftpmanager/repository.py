@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from ftplib import FTP, all_errors
 from hosting.models import AppUserFtpUserRelation
@@ -43,7 +44,7 @@ class FtpManagerRepository(object):
                                 file_content)
 
 
-class CreateFTPUser(object):
+class ManageFTPUser(object):
     def __init__(self):
         self.conn = self._initialize_ftp_db_connection()
 
@@ -58,6 +59,7 @@ class CreateFTPUser(object):
     def _make_user_relations(self, app_user, ftp_user):
         AppUserFtpUserRelation.objects.create(app_user=app_user, ftp_user=ftp_user)
 
+
     def _get_last_ftp_user_uid(self):
         cur = self.conn.cursor()
         cur.execute("select uid from ftpuser order by uid desc;")
@@ -65,11 +67,20 @@ class CreateFTPUser(object):
         cur.close()
         return int(lastuid)
 
+    # def _create_ftp_dir_for_user(self, app_user):
+    #     basedir = '/srv/hosting/'
+    #     ftp_dir = basedir + app_user
+    #     os.mkdir(ftp_dir)
+    #     os.chown(ftp_dir, self.ftp_user_uid, 2000)
+    #     print("Directorio creado")
+    #     return ftp_dir
+
     def create_ftp_user_for_app_user(self, app_user, ftp_user, ftp_password):
         self._make_user_relations(app_user, ftp_user)
         ftp_user_uid = self._get_last_ftp_user_uid() + 1;
-        base_dir = '/srv/hosting/'
-        ftp_user_workdir = base_dir + app_user
+        # ftp_user_workdir = self._create_ftp_dir_for_user(app_user)
+        basedir = '/srv/hosting/'
+        ftp_user_workdir = basedir + app_user
         cur = self.conn.cursor()
         cur.execute("""insert into ftpuser values
                     ('{}','{}', {}, 2000,
@@ -80,6 +91,9 @@ class CreateFTPUser(object):
         self.conn.close()
 
 def get_ftp_user_for_app_user(user):
-    user_data = AppUserFtpUserRelation.objects.get(app_user=user)
-    ftp_user = user_data.ftp_user
-    return ftp_user
+    try:
+        user_data = AppUserFtpUserRelation.objects.get(app_user=user)
+        ftp_user = user_data.ftp_user
+        return ftp_user
+    except:
+        return ""

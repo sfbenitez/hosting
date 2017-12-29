@@ -56,6 +56,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Login urls
+LOGIN_URL='/'
+
 AUTHENTICATION_BACKENDS = [
     'django_python3_ldap.auth.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',

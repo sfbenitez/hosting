@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+@login_required
 def index(request):
     tittle='Dashboard'
     sidebaractive='active'
@@ -12,6 +13,7 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+@login_required
 def filemanager(request):
     tittle='File Manager'
     sidebaractive='active'
@@ -23,6 +25,7 @@ def filemanager(request):
     }
     return render(request, 'filemanager.html', context)
 
+@login_required
 def databases(request):
     tittle='DB Manager'
     sidebaractive='active'
@@ -34,6 +37,7 @@ def databases(request):
     }
     return render(request, 'databases.html', context)
 
+@login_required
 def stats(request):
     tittle='Web Statistics'
     sidebaractive='active'

@@ -8,6 +8,84 @@
   </div>
   <div class="container-fluid">
     <hr>
+    {% if ftp_user_not_exist or user_taken %}
+    <!-- ========== FTP New User ========== -->
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+            <h5>New FTP User</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="/user/ftpmanager/newuser" >
+              {% csrf_token %}
+              <div class="control-group">
+                <label class="control-label">FTPManager Username</label>
+                <div class="controls">
+                  <input type="text" name="username" required/>
+                  {% if user_taken %}
+                    <span class="help-inline">Username already taken, please try another one.</span>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Password</label>
+                <div class="controls">
+                  <input type="password" name="password" required/>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Confirm password</label>
+                <div class="controls">
+                  <input type="password" name="password2" required/>
+                </div>
+              </div>
+              <div class="form-actions">
+                <input type="submit" value="Create FTP User" class="btn btn-success">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if ftp_user_exist or password_error %}
+    <!-- ========== FTP Login ========== -->
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+            <h5>Login FTP</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{% url 'dir_details' '/' %}" >
+              {% csrf_token %}
+              <div class="control-group">
+                <label class="control-label">FTPManager Username</label>
+                <div class="controls">
+                  <input type="text" name="username" value="{{ftp_user}}" readonly/>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Password</label>
+                <div class="controls">
+                  <input type="password" name="password" required/>
+                  {% if password_error %}
+                  <span class="help-inline">Password wrong, please try again.</span>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-actions">
+                <input type="submit" value="DB User" class="btn btn-success">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <!-- ========== File Listing ========== -->
+    <!-- {% if user_ftp_authenticated %} -->
     <div class="row-fluid">
       <div class="span6">
       <div class="widget-box">
@@ -87,8 +165,44 @@
           </div>
         </div>
       </div>
+      </div>
+      <div class="span6">
+        <div class="widget-box ">
+          <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+            <h5>Información</h5>
+          </div>
+          <div class="widget-title">
+            <ul class="nav nav-tabs">
+              <li class="active"><a data-toggle="tab" href="#tab1">Datos de conexión</a></li>
+              <li><a data-toggle="tab" href="#tab2">Cuotas</a></li>
+              <li><a data-toggle="tab" href="#tab3">Límite de tamaño</a></li>
+              <li><a data-toggle="tab" href="#tab4">Utilice un cliente FTP</a></li>
+              <li><a data-toggle="tab" href="#tab5">Seguridad</a></li>
+            </ul>
+          </div>
+          <div class="widget-content tab-content">
+            <div id="tab1" class="tab-pane active">
+              <p>Dirección ip del servidor: 172.22.200.127</p>
+              <p>Usuario: {{ftp_user}}</p>
+              <p>Contraseña de acceso al servidor FTP: {{prefixpassword}}******</p>
+            </div>
+            <div id="tab2" class="tab-pane">
+              <p>Las cuentas comunes de nuestro servidor tienen una cuota de máximo 100MB de espacio. Para aumentar este límite mejore su cuenta con nuestro plan PREMIUM.</p>
+            </div>
+            <div id="tab3" class="tab-pane">
+              <p>El tamaño máximo de subida para cada fichero es de 40MB.</p>
+            </div>
+            <div id="tab4" class="tab-pane">
+              <p>Se recomienda usar un cliente FTP, la conexión mediante la aplicación es menos optima por cuestiones obvias.</p>
+            </div>
+            <div id="tab5" class="tab-pane">
+              <p>Recuerde siempre finalizar la sesión cuando crea oportuno.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+    <!-- {% endif %} -->
   </div>
 </div>
 <!--end-main-container-part-->

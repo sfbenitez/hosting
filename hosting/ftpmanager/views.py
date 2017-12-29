@@ -1,52 +1,92 @@
+# -*- coding: utf-8 -*-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from . import repository
 from django.http import Http404
 import os
-from .forms import FTPUploadFileForm
 
+@login_required
 def index(request):
-	# path='/'
+	# HTML Content
+	title='FTP Manager'
+	sidebaractive='active'
+	topmenu='current'
+	context = {
+		'title' : title,
+		'activeftpmanager' : sidebaractive,
+		'currenttopmenu' : topmenu,
+	}
 	app_user=request.user.username
 	ftp_user = repository.get_ftp_user_for_app_user(app_user)
-	print(ftp_user)
-	ftp_password='usuario'
-	conection = repository.FtpManagerRepository(ftp_user,ftp_password)
-	dirs, files, pwd  = conection.get_dir_details('/')
-	return render(request, "filemanager.html", {
-		'dirs':dirs,
-		'files':files,
-		'pwd':pwd
-		})
+	if ftp_user == "":
+		context["ftp_user_not_exist"] = True
+		return render(request, "filemanager.html", context)
+	else:
+		context["ftp_user_exist"] = True
+		context["ftp_user"] = ftp_user
+		if 'ftp_password' in request.session:
+			del request.session['ftp_password']
+		return render(request, "filemanager.html", context)
 
+
+@login_required
 def dir_details(request, path):
-	print(path)
+	# HTML Content
+	title='FTP Manager'
+	sidebaractive='active'
+	topmenu='current'
+	context = {
+		'title' : title,
+		'activeftpmanager' : sidebaractive,
+		'currenttopmenu' : topmenu,
+	}
 	app_user=request.user.username
 	ftp_user = repository.get_ftp_user_for_app_user(app_user)
-	print(ftp_user)
-	ftp_password = 'usuario'
-	conn = repository.FtpManagerRepository(ftp_user,ftp_password)
+	if 'ftp_password' not in request.session:
+		ftp_password = request.POST['password']
+		request.session['ftp_password'] = ftp_password
+	else:
+		ftp_password = request.session['ftp_password']
+
+	try:
+		conn = repository.FtpManagerRepository(ftp_user,ftp_password)
+		context['user_ftp_authenticated'] = True
+	except:
+		context['password_error'] = True
+		context['ftp_user'] = ftp_user
+		return render(request, "filemanager.html", context)
 	dirs, files, pwd = conn.get_dir_details(path)
 	base_name = '/user/ftpmanager/directory'
 	previouspath = base_name + os.path.dirname(pwd)
 	nextpath = base_name + pwd
-	return render(request, "filemanager.html", {
-		'dirs':dirs,
-		'files':files,
-		'pwd':pwd,
-		'nextpath':nextpath,
-		'previouspath':previouspath,
-		})
+	context['ftp_user'] = ftp_user
+	context['dirs'] = dirs
+	context['files'] = files
+	context['pwd'] = pwd
+	context['nextpath'] = nextpath
+	context['previouspath'] = previouspath
+	context['prefixpassword'] = ftp_password[:2]
+	return render(request, "filemanager.html", context)
 
+@login_required
 def new_ftp_user(request):
 	app_user=request.user.username
-	ftp_user = 'sfbenitez_ftp'
-	ftp_password = 'usuario'
-	init_create_ftp_user = repository.CreateFTPUser()
-	init_create_ftp_user.create_ftp_user_for_app_user(app_user,
-													ftp_user,
-													ftp_password)
+	ftp_user = request.POST['username']
+	ftp_password = request.POST['password']
+	ftp_password2 = request.POST['password2']
+	if ftp_password == ftp_password2:
+		init_create_ftp_user = repository.ManageFTPUser()
+		init_create_ftp_user.create_ftp_user_for_app_user(app_user,
+															ftp_user,
+															ftp_password)
+	# 	except:
+	# 		return render(request, "filemanager.html", {'user_taken' : True})
+	else:
+		return render(request, "filemanager.html", {'password_not_confirm' : True})
+
 	return index(request)
 
+@login_required
 def upload_file(request):
 	app_user=request.user.username
 	ftp_user = repository.get_ftp_user_for_app_user(app_user)
