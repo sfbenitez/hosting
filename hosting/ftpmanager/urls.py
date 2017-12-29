@@ -18,10 +18,9 @@ from django.urls import path
 from django.contrib import admin
 from . import views
 
-app_name = 'ftpclient'
-
 urlpatterns = [
     path('', views.index, name='index'),
-    url(r'^(?P<file>.+)$', views.download, name='download'),
+    url(r'^(?P<path>.+)$', views.dir_details, name='dir_details'),
+    # path('<pwd>', views.dir_details, name='pwd_details'),
     # path('^upload/$', views.upload, name='upload'),
 ]

@@ -1,13 +1,14 @@
 import os
 from django.db import models
-from ftplib import FTP
+from ftplib import FTP, all_errors
+
 
 class Conecta(object):
 	"""docstring for Conecta"""
 	def __init__(self):
 		self.url = "10.0.5.2"
 		self.handler = FTP(self.url, user='sfbenitez', passwd='usuario')
-		self.urldown = "/home/ferrete/Descargas/"
+		# self.urldown = "/home/ferrete/Descargas/"
 
 	def list(self):
 		lista = []
@@ -25,7 +26,7 @@ class Conecta(object):
 			lista2.append(h)
 		return lista2
 
-	def get_dir_details(path):
+	def get_dir_details(self,path):
 		# Connection must be open!
 		try:
 			lines = []
@@ -42,18 +43,18 @@ class Conecta(object):
 					dirs[words[-1]] = 0
 				elif words[0][0] == '-':
 					files[words[-1]] = int(words[-5])
-				return dirs, files
-		except ftplib.all_errors:
+			return dirs, files
+		except all_errors:
 			print('error')
 
 
-	def download(self, file):
-		self.urldown = "/home/ferrete/Descargas/"
-		print(file)
-		Dfile = open(self.urldown + file, 'wb')
-		self.handler.retrbinary('RETR ' + file, Dfile.write)
-		Dfile.close()
-		return True
+	# def download(self, file):
+	# 	self.urldown = "/home/ferrete/Descargas/"
+	# 	print(file)
+	# 	Dfile = open(self.urldown + file, 'wb')
+	# 	self.handler.retrbinary('RETR ' + file, Dfile.write)
+	# 	Dfile.close()
+	# 	return True
 
 	# def upload(self, file):
 	# 	self.handler.storbinary('STOR ' + str(file), open(file, 'rb'), 1024)

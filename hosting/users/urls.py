@@ -8,7 +8,7 @@ from users import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('dashboard', views.index),
-    path('filemanager/', include('ftpclient.urls')),
+    path('ftpmanager/', include('ftpmanager.urls')),
     path('domains/', include('domains.urls')),
     path('databases/', include('dbmanager.urls')),
     path('stats', views.stats),

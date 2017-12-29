@@ -3,14 +3,60 @@
 <!--main-container-part-->
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="/user/filemanager" class="{{currenttopmenu}}">File Manager</a></div>
-    <h1>File Manager</h1>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="current">Tables</a> </div>
+    <h1>FTP Manager</h1>
   </div>
-  <h1>Lista de archivos:</h1>
-  {% for archivo in lista %}
-  <li><a href="/user/filemanager/{% if parentfile %}{{parentfile}}/{% else %}{{archivo}}{% endif %}">{{ archivo }}</a></li>
-  {% endfor %}
+  <div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+      <div class="span6">
+      <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-th-list"></i> </span>
+          <h5>Files list: </h5>
+        </div>
+        <div class="widget-content ">
+          <table class="table table-bordered table-striped with-check">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Current location: {{pwd}} </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if pwd == "/" %}
+                {% for path in dirs %}
+                <tr>
+                  <td><input type="checkbox" name="ficheros"/></td>
+                  <td><span class="icon"> <i class="icon-folder-close"></i> </span><a href="{{path}}">{{ path }}</a></td>
+                </tr>
+                {% endfor %}
+              {% else %}
+              <tr>
+                <td></td>
+                <td><span class="icon"> <i class="icon-folder-open"></i> </span><a href="{{ previouspath }}">. .</a></td>
+              </tr>
 
+                {% for path in dirs %}
+                <tr>
+                  <td><input type="checkbox" name="ficheros"/></td>
+                  <td><span class="icon"> <i class="icon-folder-close"></i> </span><a href="{{nextpath}}/{{ path }}">{{ path }}</a></td>
+                </tr>
+                {% endfor %}
+              {% endif %}
+              {% for archivo in files %}
+              <tr>
+                <td><input type="checkbox" name="ficheros"/></td>
+                <td><span class="icon"> <i class="icon-file"></i> </span><a href="{{archivo}}">{{ archivo }}</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 </div>
 <!--end-main-container-part-->
 {% endblock %}
