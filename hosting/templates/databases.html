@@ -105,9 +105,11 @@
               </tbody>
             </table>
             {%if db_number <= 5 or new_user %}
-            <div class="widget-title">
-              <a href="#collapseTwo" data-toggle="collapse"><h5>New Database</h5></a>
-            </div>
+            <a href="#collapseTwo" data-toggle="collapse">
+              <div class="widget-title">
+                <h5>New Database</h5>
+              </div>
+            </a>
             <div class="collapse" id="collapseTwo">
               <div class="widget-content">
                 <form action="/user/databases/newdb" method="post" class="form-horizontal">
@@ -131,9 +133,11 @@
               </div>
             </div>
             {% endif %}
-            <div class="widget-title">
-              <a href="#collapseThree" data-toggle="collapse"><h5>Delete database</h5></a>
-            </div>
+            <a href="#collapseThree" data-toggle="collapse">
+              <div class="widget-title">
+                <h5>Delete database</h5>
+              </div>
+            </a>
             <div class="collapse" id="collapseThree">
               <div class="widget-content">
                 <form action="/user/databases/deldb" method="post" class="form-horizontal">

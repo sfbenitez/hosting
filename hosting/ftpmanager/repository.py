@@ -1,6 +1,7 @@
 import os
-from django.db import models
 from ftplib import FTP, all_errors
+from hosting.models import AppUserFtpUserRelation
+import psycopg2
 
 
 class FtpManagerRepository(object):
@@ -12,7 +13,7 @@ class FtpManagerRepository(object):
         self.conn = FTP(self.url, user=ftp_user, passwd=ftp_password)
         return self.conn
 
-    def _get_dir_details(self,path):
+    def get_dir_details(self,path):
         # Connection must be open!
         try:
             print(path)
@@ -35,3 +36,50 @@ class FtpManagerRepository(object):
             return dirs, files, pwd
         except all_errors:
             print('error')
+
+    def upload_file(self, pwd, file_name, file_content):
+        self.conn.cwd(pwd)
+        self.conn.storbinary('STOR ' + os.path.basename(file_name),
+                                file_content)
+
+
+class CreateFTPUser(object):
+    def __init__(self):
+        self.conn = self._initialize_ftp_db_connection()
+
+    def _initialize_ftp_db_connection(self):
+        if not hasattr(self, 'conn'):
+            return psycopg2.connect(dbname='proftp',
+                                    host='10.0.5.2',
+                                    user='proftp_user',
+                                    password='usuario')
+        return self.conn
+
+    def _make_user_relations(self, app_user, ftp_user):
+        AppUserFtpUserRelation.objects.create(app_user=app_user, ftp_user=ftp_user)
+
+    def _get_last_ftp_user_uid(self):
+        cur = self.conn.cursor()
+        cur.execute("select uid from ftpuser order by uid desc;")
+        lastuid = cur.fetchone()[0]
+        cur.close()
+        return int(lastuid)
+
+    def create_ftp_user_for_app_user(self, app_user, ftp_user, ftp_password):
+        self._make_user_relations(app_user, ftp_user)
+        ftp_user_uid = self._get_last_ftp_user_uid() + 1;
+        base_dir = '/srv/hosting/'
+        ftp_user_workdir = base_dir + app_user
+        cur = self.conn.cursor()
+        cur.execute("""insert into ftpuser values
+                    ('{}','{}', {}, 2000,
+                    '{}','/bin/bash');
+                """.format(ftp_user, ftp_password, ftp_user_uid, ftp_user_workdir))
+        self.conn.commit()
+        cur.close()
+        self.conn.close()
+
+def get_ftp_user_for_app_user(user):
+    user_data = AppUserFtpUserRelation.objects.get(app_user=user)
+    ftp_user = user_data.ftp_user
+    return ftp_user

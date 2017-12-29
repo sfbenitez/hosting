@@ -52,6 +52,39 @@
             </tbody>
 
           </table>
+          <a href="#collapseTwo" data-toggle="collapse">
+            <div class="widget-title">
+              <h5>Upload a file</h5>
+            </div>
+          </a>
+          <div class="collapse" id="collapseTwo">
+            <div class="widget-content">
+              <form action="/user/ftpmanager/upload" method="post" enctype="multipart/form-data" class="form-horizontal">
+                {% csrf_token %}
+                <div class="control-group">
+                  <label class="control-label">Directory :</label>
+                  <div class="controls">
+                    <input type="text" class="span4" name="pwd" value="{{pwd}}" readonly/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Select file :</label>
+                  <div class="controls">
+                    <input type="file" class="span4" name="file" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Password :</label>
+                  <div class="controls">
+                    <input type="password"  class="span4" placeholder="Enter Password" name="password" required/>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-success">Upload file</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>

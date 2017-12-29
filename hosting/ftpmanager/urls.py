@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    url(r'^(?P<path>.+)$', views.dir_details, name='dir_details'),
-    # path('<pwd>', views.dir_details, name='pwd_details'),
-    # path('^upload/$', views.upload, name='upload'),
+    url(r'^directory/(?P<path>.+)$', views.dir_details, name='dir_details'),
+    path('newuser', views.new_ftp_user),
+    path('upload', views.upload_file, name='upload'),
 ]
