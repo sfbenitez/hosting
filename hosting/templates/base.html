@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <title>{{title}}</title>
 <meta charset="UTF-8" />
@@ -21,12 +22,12 @@
   <h1><a href="dashboard.html">Matrix Admin</a></h1>
 </div>
 <!--close-Header-part-->
-
+<!-- ======= Common users sidebar and content ======= -->
 
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
   <ul class="nav">
-    <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">Welcome {{user.username}}</span><b class="caret"></b></a>
+    <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">Welcome {% if request.session.admin %} admin:  {% endif %}{{user.username}}</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li><a href="#"><i class="icon-user"></i> My Profile</a></li>
         <li class="divider"></li>
@@ -59,6 +60,23 @@
 <!--close-top-serch-->
 
 <!--sidebar-menu-->
+{% if request.session.admin %}
+<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
+  <ul>
+    <li class="{{activedashboard}}"><a href="/admin/dashboard"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class="{{activeappusers}}"> <a href="/admin/users"><i class="icon-group"></i> <span>Hosting users management</span></a> </li>
+    <li class="{{activeftpmanager}}"> <a href="/admin/ftpmanager"><i class="icon-group"></i> <span>FTP users management</span></a> </li>
+    <li class="{{activedomains}}"><a href="/admin/domains"><i class="icon icon-globe"></i> <span> Domains Management </span></a></li>
+    <li class="{{activedatabases}}"> <a href="/admin/dbmanager"><i class="icon icon-th"></i> <span> DB Management </span></a> </li>
+      <!-- <ul>
+        <li><a href="/user/domains">Get new domain</a></li>
+        <li><a href="/user/domains">Manage domains</a></li>
+      </ul> -->
+    <li class="{{activestats}}"><a href="/admin/stats"><i class="icon icon-signal"></i> <span> Web Statistics</span></a></li>
+  </ul>
+</div>
+{% else %}
+
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
   <ul>
     <li class="{{activedashboard}}"><a href="/user/dashboard"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
@@ -71,6 +89,7 @@
     </li>
     <li class="{{activedatabases}}"> <a href="/user/databases"><i class="icon icon-th"></i> <span> Databases </span></a> </li>
     <li class="{{activestats}}"><a href="/user/stats"><i class="icon icon-signal"></i> <span> Web Statistics</span></a></li>
+
     <li class="content"> <span>Monthly Bandwidth Transfer</span>
       <div class="progress progress-mini progress-danger active progress-striped">
         <div style="width: 77%;" class="bar"></div>
@@ -87,6 +106,7 @@
     </li>
   </ul>
 </div>
+{% endif %}
 <!--sidebar-menu-->
 
 <!--main-container-part-->

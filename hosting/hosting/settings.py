@@ -80,6 +80,7 @@ LDAP_AUTH_USER_FIELDS = {
     "first_name": "givenName",
     "last_name": "sn",
     "email": "mail",
+    # "is_superuser": "gidNumber",
 }
 # A tuple of django model fields used to uniquely identify a user.
 LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
