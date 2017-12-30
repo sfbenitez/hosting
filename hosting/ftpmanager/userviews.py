@@ -32,7 +32,7 @@ def index(request):
 @login_required
 def dir_details(request, path):
 	# HTML Content
-	title='FTP Manager'
+	title='FTP Directory'
 	sidebaractive='active'
 	topmenu='current'
 	context = {
