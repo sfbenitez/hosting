@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from . import repository
 from django.http import Http404
 import os
+from passlib.hash import md5_crypt
 
 @login_required
 def index(request):

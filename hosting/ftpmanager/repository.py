@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import uuid
 from ftplib import FTP, all_errors
 from hosting.models import AppUserFtpUserRelation
 import psycopg2
@@ -59,21 +60,12 @@ class ManageFTPUser(object):
     def _make_user_relations(self, app_user, ftp_user):
         AppUserFtpUserRelation.objects.create(app_user=app_user, ftp_user=ftp_user)
 
-
     def _get_last_ftp_user_uid(self):
         cur = self.conn.cursor()
         cur.execute("select uid from ftpuser order by uid desc;")
         lastuid = cur.fetchone()[0]
         cur.close()
         return int(lastuid)
-
-    # def _create_ftp_dir_for_user(self, app_user):
-    #     basedir = '/srv/hosting/'
-    #     ftp_dir = basedir + app_user
-    #     os.mkdir(ftp_dir)
-    #     os.chown(ftp_dir, self.ftp_user_uid, 2000)
-    #     print("Directorio creado")
-    #     return ftp_dir
 
     def create_ftp_user_for_app_user(self, app_user, ftp_user, ftp_password):
         self._make_user_relations(app_user, ftp_user)
@@ -89,6 +81,15 @@ class ManageFTPUser(object):
         self.conn.commit()
         cur.close()
         self.conn.close()
+
+# class FTP_user_password():
+#
+#     def __init__(self, username, password):
+#         self.username = username
+#         self.pw_hash = sha256_crypt.encrypt(password)
+#
+#     def verify(self, password):
+#         return sha256_crypt.verify(password, self.pw_hash)
 
 def get_ftp_user_for_app_user(user):
     try:
