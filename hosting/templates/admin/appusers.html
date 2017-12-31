@@ -6,6 +6,63 @@
     <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="/user/stats" class="{{currenttopmenu}}">App users</a></div>
     <h1>User Management</h1>
   </div>
+  <div class="container-fluid">
+    <hr>
+    <!-- ========== App common users ========== -->
+    <div class="row-fluid">
+      <div class="span6">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-group"></i> </span>
+            <h5>Common users</h5>
+          </div>
+          <div class="widget-content padding">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Users</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in common_users %}
+                <tr class="odd gradeA">
+                  <td>
+                    {{user}}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-group"></i> </span>
+            <h5>Premium users</h5>
+          </div>
+          <div class="widget-content padding">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Users</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in premium_users %}
+                <tr class="odd gradeA">
+                  <td>
+                    {{user}}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 <!--end-main-container-part-->
 {% endblock %}
