@@ -27,7 +27,7 @@ def index(request):
 				return redirect('/user/dashboard')
 			else:
 				request.session["admin"] = True
-				return redirect('/user/dashboard')
+				return redirect('/admin/dashboard')
 
 
 	return render(request, 'login.html', context)
