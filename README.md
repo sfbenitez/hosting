@@ -10,4 +10,4 @@ The hosting server is dividided on the next services:
 * FTP server: Proftpd 1.3.5a
 * DNS servier: Bind9 9.10.3
 
-[Here](doc/README.md) is all the documentation of the configuration of the services.
+[Here](doc/README.md) is all the documentation of the configuration of the services and the deploy process made.
