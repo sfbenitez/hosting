@@ -12,6 +12,64 @@
     <div class="row-fluid">
       <div class="span6">
         <div class="widget-box">
+          <a href="#collapseOne" data-toggle="collapse">
+            <div class="widget-title">
+              <h5>New User</h5>
+            </div>
+          </a>
+          <div class="collapse" id="collapseOne">
+            <div class="widget-content">
+              <form action="{% url 'add_user' %}" method="post" class="form-horizontal">
+                {% csrf_token %}
+                <div class="control-group">
+                  <label class="control-label">Nombre:</label>
+                  <div class="controls">
+                    <input type="text"  class="span4" placeholder="Nombre" name="name" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Apellidos:</label>
+                  <div class="controls">
+                    <input type="text"  class="span4" placeholder="Apellidos" name="surname" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Dirección de correo electrónico:</label>
+                  <div class="controls">
+                    <input type="text"  class="span4" placeholder="e-mail" name="mail" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Nombre de usuario:</label>
+                  <div class="controls">
+                    <input type="text" class="span4" placeholder="Username" name="username" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Contraseña:</label>
+                  <div class="controls">
+                    <input type="password"  class="span4" placeholder="Enter Password" name="password" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Premium :</label>
+                  <div class="controls">
+
+                    <input type="checkbox" name="premium" />
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <label class="control-label">Admin password:</label>
+                  <div class="controls">
+                    <input type="password"  class="span4" placeholder="Enter Password" name="ldap_password" required/>
+                  </div>
+                  <button type="submit" class="btn btn-success">Sing up user</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-group"></i> </span>
             <h5>Common users</h5>
           </div>
@@ -36,6 +94,65 @@
         </div>
       </div>
       <div class="span6">
+        <div class="widget-box">
+          <a href="#collapseTwo" data-toggle="collapse">
+            <div class="widget-title">
+              <h5>Upgrade, Delete users</h5>
+            </div>
+          </a>
+          <div class="collapse" id="collapseTwo">
+            <div class="widget-content">
+              <form action="{% url 'add_user' %}" method="post" class="form-horizontal">
+                {% csrf_token %}
+                <div class="control-group">
+                  <label class="control-label">Nombre:</label>
+                  <div class="controls">
+                    <input type="text"  class="span4" placeholder="Nombre" name="name" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Apellidos:</label>
+                  <div class="controls">
+                    <input type="text"  class="span4" placeholder="Apellidos" name="surname" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Dirección de correo electrónico:</label>
+                  <div class="controls">
+                    <input type="text"  class="span4" placeholder="e-mail" name="mail" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Nombre de usuario:</label>
+                  <div class="controls">
+                    <input type="text" class="span4" placeholder="Username" name="username" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Contraseña:</label>
+                  <div class="controls">
+                    <input type="password"  class="span4" placeholder="Enter Password" name="password" required/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Premium :</label>
+                  <div class="controls">
+
+                    <input type="checkbox" name="premium" />
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <label class="control-label">Admin password:</label>
+                  <div class="controls">
+                    <input type="password"  class="span4" placeholder="Enter Password" name="ldap_password" required/>
+                  </div>
+                  <button type="submit" class="btn btn-success">Sing up user</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-group"></i> </span>
             <h5>Premium users</h5>

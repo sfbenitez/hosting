@@ -13,5 +13,5 @@ urlpatterns = [
     path('databases/', include('dbmanager.urls')),
     path('stats', views.stats),
     # Admin users paths
-    path('appusers/', admins.views.appusers),
+
 ]
