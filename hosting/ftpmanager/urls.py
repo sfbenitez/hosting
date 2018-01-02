@@ -23,4 +23,6 @@ urlpatterns = [
     url(r'^directory(?P<path>.+)$', userviews.dir_details, name='dir_details'),
     path('newuser', userviews.new_ftp_user),
     path('upload', userviews.upload_file, name='upload'),
+    path('delete', userviews.delete_file, name='delete_file'),
+    path('mkremdir', userviews.make_rem_dir, name='mkremdir'),
 ]

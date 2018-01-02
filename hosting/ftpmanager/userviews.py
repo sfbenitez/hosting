@@ -115,6 +115,32 @@ def upload_file(request):
 	conn.upload_file(directory_to_upload, file_name, file_content)
 
 	return dir_details(request, path = directory_to_upload)
+
+@login_required
+def delete_file(request):
+	app_user=request.user.username
+	ftp_user = repository.get_ftp_user_for_app_user(app_user)
+	ftp_password = request.POST['password']
+	current_directory = request.POST['pwd']
+	file_name = request.POST['filename']
+	conn = repository.FtpManagerRepository(ftp_user,ftp_password)
+	conn.delete_file(current_directory, file_name)
+
+	return dir_details(request, path = current_directory)
+
+@login_required
+def make_rem_dir(request):
+	app_user=request.user.username
+	ftp_user = repository.get_ftp_user_for_app_user(app_user)
+	ftp_password = request.POST['password']
+	directory_where_make_dirs = request.POST['pwd']
+	dir_name = request.POST['dirname']
+
+	conn = repository.FtpManagerRepository(ftp_user,ftp_password)
+	new_dir = conn.mk_rem_dirs(directory_where_make_dirs, dir_name)
+
+	return dir_details(request, path = new_dir)
+
 #
 # def download(request, file):
 # 	print(file)

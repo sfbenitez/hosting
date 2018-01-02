@@ -96,7 +96,7 @@
           <table class="table table-bordered table-striped with-check">
             <thead>
               <tr>
-                <th></th>
+                <!-- <th></th> -->
                 <th>Current location: {{pwd}} </th>
               </tr>
             </thead>
@@ -104,65 +104,147 @@
               {% if pwd == "/" %}
                 {% for path in dirs %}
                 <tr>
-                  <td><input type="checkbox" name="ficheros"/></td>
+                  <!-- <td><input type="checkbox" name="filename"/></td> -->
                   <td><span class="icon"> <i class="icon-folder-close"></i> </span><a href="{{path}}">{{ path }}</a></td>
                 </tr>
                 {% endfor %}
               {% else %}
               <tr>
-                <td></td>
+                <!-- <td></td> -->
                 <td><span class="icon"> <i class="icon-folder-open"></i> </span><a href="{{ previouspath }}">. .</a></td>
               </tr>
 
                 {% for path in dirs %}
                 <tr>
-                  <td><input type="checkbox" name="ficheros"/></td>
+                  <!-- <td><input type="checkbox" name="filename"/></td> -->
                   <td><span class="icon"> <i class="icon-folder-close"></i> </span><a href="{{nextpath}}/{{ path }}">{{ path }}</a></td>
                 </tr>
                 {% endfor %}
               {% endif %}
               {% for archivo in files %}
               <tr>
-                <td><input type="checkbox" name="ficheros"/></td>
+                <!-- <td><input type="checkbox" name="filename"/></td> -->
                 <td><span class="icon"> <i class="icon-file"></i> </span><a href="{{archivo}}">{{ archivo }}</a></td>
               </tr>
               {% endfor %}
             </tbody>
 
           </table>
-          <a href="#collapseTwo" data-toggle="collapse">
-            <div class="widget-title">
-              <h5>Upload a file</h5>
+
+          <div class="accordion" id="collapse-group">
+            <div class="accordion-group widget-box">
+              <div class="accordion-heading">
+                <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse"> <span class="icon"><i class="icon-upload-alt"></i></span>
+                  <h5>Upload file</h5>
+                  </a> </div>
+              </div>
+              <div class="collapse accordion-body" id="collapseGOne">
+                <div class="widget-content">
+                  <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="control-group">
+                      <label class="control-label">Directory :</label>
+                      <div class="controls">
+                        <input type="text" class="span4" name="pwd" value="{{pwd}}" readonly/>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">Select file :</label>
+                      <div class="controls">
+                        <input type="file" name="file" required/>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">Password :</label>
+                      <div class="controls">
+                        <input type="password"  class="span4" placeholder="Enter Password" name="password" required/>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button type="submit" class="btn btn-success">Upload file</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </a>
-          <div class="collapse" id="collapseTwo">
-            <div class="widget-content">
-              <form action="/user/ftpmanager/upload" method="post" enctype="multipart/form-data" class="form-horizontal">
-                {% csrf_token %}
-                <div class="control-group">
-                  <label class="control-label">Directory :</label>
-                  <div class="controls">
-                    <input type="text" class="span4" name="pwd" value="{{pwd}}" readonly/>
-                  </div>
+            <div class="accordion-group widget-box">
+              <div class="accordion-heading">
+                <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse"> <span class="icon"><i class="icon-folder-close"></i></span>
+                  <h5>New Directory</h5>
+                  </a> </div>
+              </div>
+              <div class="collapse accordion-body" id="collapseGTwo">
+                <div class="widget-content">
+                  <form action="{% url 'mkremdir' %}" method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="control-group">
+                      <label class="control-label">Current directory :</label>
+                      <div class="controls">
+                        <input type="text" class="span4" name="pwd" value="{{pwd}}" readonly/>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">Make directory list :</label>
+                      <div class="controls">
+                        <input type="text" name="dirname" required/>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">Password :</label>
+                      <div class="controls">
+                        <input type="password" placeholder="Enter Password" name="password" required/>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button type="submit" class="btn btn-success">Create Directory</button>
+                    </div>
+                  </form>
                 </div>
-                <div class="control-group">
-                  <label class="control-label">Select file :</label>
-                  <div class="controls">
-                    <input type="file" name="file" required/>
-                  </div>
+              </div>
+            </div>
+            <div class="accordion-group widget-box">
+              <div class="accordion-heading">
+                <div class="widget-title"> <a data-parent="#collapse-group" href="#collapseGThree" data-toggle="collapse"> <span class="icon"><i class="icon-remove-circle"></i></span>
+                  <h5>Delete file</h5>
+                  </a> </div>
+              </div>
+              <div class="collapse accordion-body" id="collapseGThree">
+                <div class="widget-content">
+                  <form action="{% url 'delete_file' %}" method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="control-group">
+                      <label class="control-label">Current directory :</label>
+                      <div class="controls">
+                        <input type="text" class="span4" name="pwd" value="{{pwd}}" readonly/>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">Password :</label>
+                      <div class="controls">
+                        <input type="password" placeholder="Enter Password" name="password" required/>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">File list :</label>
+                      <div class="controls">
+                        <select name="filename">
+                          {% for archivo in files %}
+                          <option>{{ archivo }}</option>
+                          
+                          {% endfor %}
+
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button type="submit" class="btn btn-success">Delete selected</button>
+                    </div>
+                  </form>
                 </div>
-                <div class="control-group">
-                  <label class="control-label">Password :</label>
-                  <div class="controls">
-                    <input type="password"  class="span4" placeholder="Enter Password" name="password" required/>
-                  </div>
-                </div>
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-success">Upload file</button>
-                </div>
-              </form>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
       </div>

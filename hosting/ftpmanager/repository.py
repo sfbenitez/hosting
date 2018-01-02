@@ -15,6 +15,16 @@ class FtpManagerRepository(object):
         self.conn = FTP(self.url, user=ftp_user, passwd=ftp_password)
         return self.conn
 
+    def mk_rem_dirs(self, pwd, path):
+        self.conn.cwd(pwd)
+        path_splitted = path.split('/')
+        for path_part in path_splitted:
+            self.conn.mkd(path_part)
+            self.conn.cwd(path_part)
+
+        pwd = self.conn.pwd()
+        return pwd
+
     def get_dir_details(self,path):
         # Connection must be open!
         try:
@@ -44,6 +54,9 @@ class FtpManagerRepository(object):
         self.conn.storbinary('STOR ' + os.path.basename(file_name),
                                 file_content)
 
+    def delete_file(self, pwd, file_name):
+        self.conn.cwd(pwd)
+        self.conn.delete(file_name)
 
 class ManageFTPUser(object):
     def __init__(self):
