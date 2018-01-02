@@ -114,12 +114,6 @@ WSGI_APPLICATION = 'hosting.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'ldap': {
-        'ENGINE': 'ldapdb.backends.ldap',
-        'NAME': 'ldap://10.0.5.2',
-        'USER': 'cn=admin,dc=sergio,dc=gonzalonazareno,dc=org',
-        'PASSWORD': 'usuario',
-     },
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'db_hosting',
@@ -130,7 +124,6 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['ldapdb.router.Router']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
