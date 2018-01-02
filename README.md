@@ -1,23 +1,13 @@
 # hosting4all
-Implantación de un servidor de hosting.
+Administration of a hosting server
 
 ------------------------------------------------------
-aplicacion web apache
-nombredominio: hosting4all.com
+The management of the hosting server is released by a web application made in django. This repository was created for that web application.
 
-base de datos: postgres
+The hosting server is dividided on the next services:
+* Web service: Apache2.4 with WSGI-mod
+* SGBD: PostgreSQL 9.6
+* FTP server: Proftpd 1.3.5a
+* DNS servier: Bind9 9.10.3
 
-
-posibles mejoras:
-poder ejecutar python en el servidor, 
-Configuración de estadísticas Webs, 
-Utilización de cuotas(script), 
-Aplicación web para la gestión del hosting(bottle),
-Usuarios virtuales con LDAP, 
-Creación de subdominios
-
-requisitos:
-
-- python-ldap
-
-apt-get install python-dev libldap2-dev libsasl2-dev
+[Here](doc/README.md) is all the documentation of the configuration of the services.
