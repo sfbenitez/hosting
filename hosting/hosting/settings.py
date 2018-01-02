@@ -86,7 +86,7 @@ LDAP_AUTH_USER_FIELDS = {
 # A tuple of django model fields used to uniquely identify a user.
 LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
 # function searching for a specific gidNumber
-LDAP_AUTH_FORMAT_SEARCH_FILTERS = "hosting.module.gidNumber_search_filters"
+# LDAP_AUTH_FORMAT_SEARCH_FILTERS = "hosting.module.gidNumber_search_filters"
 
 
 ROOT_URLCONF = 'hosting.urls'

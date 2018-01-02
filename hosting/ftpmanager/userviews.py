@@ -56,10 +56,22 @@ def dir_details(request, path):
 		context['password_error'] = True
 		context['ftp_user'] = ftp_user
 		return render(request, "filemanager.html", context)
+	# Get ftp details
 	dirs, files, pwd = conn.get_dir_details(path)
+	# quota details
+	init_ftp_manage = repository.ManageFTPUser()
+	quota = init_ftp_manage.get_quota_used(ftp_user)
+	quota_limit = int(quota[0] / 1024 / 1024) # MB
+	quota_used = int(quota[1] / 1024 / 1024) # MB
+	quota_percent = int((quota_used * 100) / quota_limit)
 	base_name = '/user/ftpmanager/directory'
 	previouspath = base_name + os.path.dirname(pwd)
 	nextpath = base_name + pwd
+
+	# Fill context
+	context['quota_limit'] = quota_limit
+	context['quota_used'] = quota_used
+	context['quota_percent'] = quota_percent
 	context['ftp_user'] = ftp_user
 	context['dirs'] = dirs
 	context['files'] = files
@@ -67,6 +79,7 @@ def dir_details(request, path):
 	context['nextpath'] = nextpath
 	context['previouspath'] = previouspath
 	context['prefixpassword'] = ftp_password[:2]
+
 	return render(request, "filemanager.html", context)
 
 @login_required
@@ -75,11 +88,14 @@ def new_ftp_user(request):
 	ftp_user = request.POST['username']
 	ftp_password = request.POST['password']
 	ftp_password2 = request.POST['password2']
+	is_premium = request.session.get('premium', False)
 	if ftp_password == ftp_password2:
 		init_create_ftp_user = repository.ManageFTPUser()
 		init_create_ftp_user.create_ftp_user_for_app_user(app_user,
 															ftp_user,
-															ftp_password)
+															ftp_password,
+															is_premium)
+
 	# 	except:
 	# 		return render(request, "filemanager.html", {'user_taken' : True})
 	else:
@@ -98,7 +114,7 @@ def upload_file(request):
 	conn = repository.FtpManagerRepository(ftp_user,ftp_password)
 	conn.upload_file(directory_to_upload, file_name, file_content)
 
-	return redirect('dir_details', path = directory_to_upload)
+	return dir_details(request, path = directory_to_upload)
 #
 # def download(request, file):
 # 	print(file)

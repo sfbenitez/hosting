@@ -102,43 +102,16 @@
           </a>
           <div class="collapse" id="collapseTwo">
             <div class="widget-content">
-              <form action="{% url 'add_user' %}" method="post" class="form-horizontal">
+              <form action="{% url 'del_user' %}" method="post" class="form-horizontal">
                 {% csrf_token %}
-                <div class="control-group">
-                  <label class="control-label">Nombre:</label>
-                  <div class="controls">
-                    <input type="text"  class="span4" placeholder="Nombre" name="name" required/>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label">Apellidos:</label>
-                  <div class="controls">
-                    <input type="text"  class="span4" placeholder="Apellidos" name="surname" required/>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label">Dirección de correo electrónico:</label>
-                  <div class="controls">
-                    <input type="text"  class="span4" placeholder="e-mail" name="mail" required/>
-                  </div>
-                </div>
                 <div class="control-group">
                   <label class="control-label">Nombre de usuario:</label>
                   <div class="controls">
-                    <input type="text" class="span4" placeholder="Username" name="username" required/>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label">Contraseña:</label>
-                  <div class="controls">
-                    <input type="password"  class="span4" placeholder="Enter Password" name="password" required/>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label">Premium :</label>
-                  <div class="controls">
-
-                    <input type="checkbox" name="premium" />
+                    <select name="usertodel">
+                      {% for user in appusers %}
+                      <option>{{ user }}</option>
+                      {% endfor %}
+                    </select>
                   </div>
                 </div>
                 <div class="form-actions">
@@ -146,7 +119,7 @@
                   <div class="controls">
                     <input type="password"  class="span4" placeholder="Enter Password" name="ldap_password" required/>
                   </div>
-                  <button type="submit" class="btn btn-success">Sing up user</button>
+                  <button type="submit" class="btn btn-success">Delete user</button>
                 </div>
               </form>
             </div>

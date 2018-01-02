@@ -6,6 +6,6 @@ def gidNumber_search_filters(ldap_fields):
 
     search_filters = format_search_filters(ldap_fields)
     # admin gid: 2001, common users gid = 2000
-    search_filters.append("(|(gidNumber=2000)(gidNumber=2001))")
+    search_filters.append("(|(gidNumber=2000)(gidNumber=2001)(gidNumber=2050))")
 
     return search_filters

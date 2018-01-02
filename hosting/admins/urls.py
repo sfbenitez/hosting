@@ -11,6 +11,7 @@ urlpatterns = [
     path('dashboard', views.index),
     path('appusers/', admins.views.appusers),
     path('newuser/', admins.views._adduser, name = 'add_user'),
+    path('deluser/', admins.views._deluser, name = 'del_user'),
     # path('domains/', include('domains.urls')),
     # path('dbmanager/', include('dbmanager.urls')),
     # path('stats', views.stats),

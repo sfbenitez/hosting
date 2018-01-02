@@ -1,15 +1,16 @@
 from ldap3 import Server, Connection, ALL
+from ftpmanager import repository
 
 
 class UsersRepository(object):
     def __init__(self):
-        self.ldap_base = 'dc=sergio,dc=gonzalonazareno,dc=org'
+        self.ldap_users_base = 'ou=People,dc=sergio,dc=gonzalonazareno,dc=org'
         self.conn = LdapConector.initialize_ldap_connection()
 
     def _ldap_query(self):
         filter_pattern = '(objectclass=person)'
         attr_list = ['uid', 'gidNumber', 'uidNumber']
-        self.conn.search(self.ldap_base, filter_pattern, attributes=attr_list)
+        self.conn.search(self.ldap_users_base, filter_pattern, attributes=attr_list)
         return self.conn.entries
 
     def get_users(self):
@@ -40,10 +41,19 @@ class UsersRepository(object):
         return password_hash
 
     def create_user(self, ldap_auth_user_password, user):
+        # App user
         auth_conn = LdapConector.rebind_to_ldap_auth_connection(self.conn, ldap_auth_user_password)
         # That comma is really important
-        user_dn = 'uid=' + user['uid'] + ',' + self.ldap_base
+        user_dn = 'uid=' + user['uid'] + ',' + self.ldap_users_base
         auth_conn.add(user_dn, user['objectclass'], user['user_attributes'])
+        auth_conn.unbind()
+
+
+    def delete_user(self, ldap_auth_user_password, user):
+        auth_conn = LdapConector.rebind_to_ldap_auth_connection(self.conn, ldap_auth_user_password)
+        # That comma is really important
+        user_dn = 'uid=' + user + ',' + self.ldap_users_base
+        auth_conn.delete(user_dn)
         auth_conn.unbind()
 
 

@@ -21,10 +21,16 @@ def index(request):
 			login(request, user)
 			server = Server('10.0.5.2', get_info=ALL)
 			conn = Connection(server, 'cn=admin,dc=sergio,dc=gonzalonazareno,dc=org', 'usuario', auto_bind=True)
-			admin_gid = '2001'
+			admin_gid = 2050
+			premium_gid = 2001
 			is_admin = conn.search('dc=sergio,dc=gonzalonazareno,dc=org', '(&(uid={})(gidNumber={}))'.format(username, admin_gid))
+			is_premium = conn.search('dc=sergio,dc=gonzalonazareno,dc=org', '(&(uid={})(gidNumber={}))'.format(username, premium_gid))
 			if is_admin == False:
-				return redirect('/user/dashboard')
+				if is_premium == False:
+					return redirect('/user/dashboard')
+				else:
+					request.session["premium"] = True
+					return redirect('/admin/dashboard')
 			else:
 				request.session["admin"] = True
 				return redirect('/admin/dashboard')

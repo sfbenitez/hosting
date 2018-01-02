@@ -67,10 +67,22 @@ class ManageFTPUser(object):
         cur.close()
         return int(lastuid)
 
-    def create_ftp_user_for_app_user(self, app_user, ftp_user, ftp_password):
+    def _create_quota_for_ftp_user(self, ftp_user, is_premium):
+        if is_premium == False:
+            #common user quota limit
+            ftp_quota = 50728640 # 50MB
+        else:
+            #premium user quota limit
+            ftp_quota = 300728640 # 300MB
+        cur = self.conn.cursor()
+        cur.execute("""insert into quotalimits values('{}', 'user','t', 'hard', {},0,0,0,0,0);""".format(ftp_user, ftp_quota))
+        self.conn.commit()
+        cur.close()
+
+    def create_ftp_user_for_app_user(self, app_user, ftp_user, ftp_password, is_premium):
         self._make_user_relations(app_user, ftp_user)
+        self._create_quota_for_ftp_user(ftp_user, is_premium)
         ftp_user_uid = self._get_last_ftp_user_uid() + 1;
-        # ftp_user_workdir = self._create_ftp_dir_for_user(app_user)
         basedir = '/srv/hosting/'
         ftp_user_workdir = basedir + app_user
         cur = self.conn.cursor()
@@ -81,6 +93,14 @@ class ManageFTPUser(object):
         self.conn.commit()
         cur.close()
         self.conn.close()
+
+    def get_quota_used(self, ftp_user):
+        cur = self.conn.cursor()
+        cur.execute("""select l.bytes_in_avail, u.bytes_in_used from quotalimits l join quotatallies u on l.name = u.name where l.name = '{}'""".format(ftp_user))
+        quota_used = cur.fetchone()
+        cur.close()
+        self.conn.close()
+        return quota_used
 
 # class FTP_user_password():
 #

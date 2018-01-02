@@ -148,7 +148,7 @@
                 <div class="control-group">
                   <label class="control-label">Select file :</label>
                   <div class="controls">
-                    <input type="file" class="span4" name="file" required/>
+                    <input type="file" name="file" required/>
                   </div>
                 </div>
                 <div class="control-group">
@@ -198,6 +198,20 @@
             <div id="tab5" class="tab-pane">
               <p>Recuerde siempre finalizar la sesión cuando crea oportuno.</p>
             </div>
+          </div>
+        </div>
+        <div class="widget-box ">
+          <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+            <h5>Uso actual de tu quota</h5>
+          </div>
+          <div class="widget-content">
+            <ul class="unstyled">
+              <li> <span class="icon24 icomoon-icon-arrow-up-2 green"></span>{{quota_used}}/{{quota_limit}} MB
+                <div class="progress progress-striped">
+                  <div class="bar" style="width: {{quota_percent}}%;">{{quota_percent}} %</div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

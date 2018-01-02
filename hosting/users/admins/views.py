@@ -5,11 +5,11 @@ from . import repository
 
 @login_required
 def appusers(request):
-    tittle='App User Management'
+    title='Hosting: App User Management'
     sidebaractive='active'
     topmenu='current'
     context = {
-        'tittle' : tittle,
+        'title' : title,
         'activeappusers' : sidebaractive,
         'currenttopmenu' : topmenu
     }
@@ -17,6 +17,15 @@ def appusers(request):
     common_users, premium_users = user_repository.get_users()
     context['common_users'] = common_users
     context['premium_users'] = premium_users
+
+    # List for delete users
+    users = []
+    for i in common_users:
+        users.append(i)
+    for i in premium_users:
+        users.append(i)
+
+    context['appusers'] = users
 
     return render(request, 'admin/appusers.html', context)
 
@@ -52,4 +61,13 @@ def _adduser(request):
         'givenName': name}
     ldap_password = request.POST['ldap_password']
     user_repository.create_user(ldap_password, user)
+    return redirect('/admin/appusers')
+
+@login_required
+def _deluser(request):
+    username = request.POST['usertodel']
+    ldap_password = request.POST['ldap_password']
+
+    user_repository = repository.UsersRepository()
+    user_repository.delete_user(ldap_password, username)
     return redirect('/admin/appusers')
