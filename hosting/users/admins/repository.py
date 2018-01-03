@@ -1,4 +1,5 @@
 from . import conector
+from django.template.loader import render_to_string
 
 class UsersRepository(object):
     def __init__(self):
@@ -63,8 +64,31 @@ class UsersRepository(object):
         auth_conn.delete(user_dn)
         auth_conn.unbind()
 
-    # def get_premium_users():
-    #     common_users, premium_users, admin_users = self.get_users()
-    #     if username in
-    #     is_admin = conn.search('dc=sergio,dc=gonzalonazareno,dc=org', '(&(uid={})(gidNumber={}))'.format(username, admin_gid))
-    #     is_premium = conn.search('dc=sergio,dc=gonzalonazareno,dc=org', '(&(uid={})(gidNumber={}))'.format(username, premium_gid))
+
+class ManageDomains(object):
+
+    def _mk_dom_config_file(zonefile, context):
+        zonefile_dir = '/var/cache/bind/'
+        template = 'admin/dns/new_zone.tpl'
+        open(zonefile_dir + zonefile, "w").write(render_to_string(template, context))
+
+    def _new_free_domain(self, domain, app_user):
+        context = {}
+        context['domain'] = domain
+        context['app_user'] = app_user
+        self._mk_dom_config_file(zonefile, context)
+        path = '/etc/bind/named.conf.local'
+        zonasdns = open(path,"a")
+        zonefile='db.' + domain
+        zona='//{}\nzone "{}" {\n type master;\n file "{}.db";}\n;\n//{}\n'.format(app_user,domain,zonefile,app_user)
+        zonasdns.write(zona)
+        zonasdns.close()
+    #
+    # def _del_domain(domain, app_user):
+    #     lines = open(path).readlines()
+    #     blockstart = lines.index(block + "\n")
+    #     print blockstart
+    #     blockend = blockstart+6
+    #     print blockend
+    #     del(lines[blockstart:blockend])
+    #     open(path, 'w+').writelines(lines)

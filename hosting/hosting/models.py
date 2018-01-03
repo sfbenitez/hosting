@@ -1,16 +1,16 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.utils import timezone
 
-class roles(models.Model):
-    rol_id = models.IntegerField()
-    description = models.CharField(max_length=200)
 
-class Users(models.Model):
-    user = models.CharField(max_length=20)
-    pg_password = models.CharField(max_length=50)
-    ftp_password = models.CharField(max_length=50)
-    rol_id = models.ForeignKey(roles, on_delete=models.CASCADE)
-    fecha_alta = models.DateTimeField(default=timezone.now)
+class appuserdomains(models.Model):
+    app_user = models.CharField(max_length=50)
+    domain_name = models.CharField(max_length=200, primary_key=True)
+
+class appusersubdomains(models.Model):
+    domain_name = models.ForeignKey(appuserdomains,
+        on_delete=models.CASCADE)
+    subdomain_name = models.CharField(max_length=200, primary_key=True)
 
 class AppUserDbUserRelation(models.Model):
     app_user = models.CharField(max_length=50, unique=True, primary_key=True)
