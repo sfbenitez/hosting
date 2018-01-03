@@ -72,18 +72,20 @@ class ManageDomains(object):
         template = 'admin/dns/new_zone.tpl'
         open(zonefile_dir + zonefile, "w").write(render_to_string(template, context))
 
-    def _new_free_domain(self, domain, app_user):
-        context = {}
-        context['domain'] = domain
-        context['app_user'] = app_user
-        self._mk_dom_config_file(zonefile, context)
+    def _add_dom(domain, app_user):
         path = '/etc/bind/named.conf.local'
         zonasdns = open(path,"a")
         zonefile='db.' + domain
         zona='//{}\nzone "{}" {\n type master;\n file "{}.db";}\n;\n//{}\n'.format(app_user,domain,zonefile,app_user)
         zonasdns.write(zona)
         zonasdns.close()
-    #
+
+    def _new_free_domain(self, domain, app_user):
+        context = {}
+        context['domain'] = domain
+        context['app_user'] = app_user
+        self._mk_dom_config_file(zonefile, context)
+        self._add_dom(domain, app_user)
     # def _del_domain(domain, app_user):
     #     lines = open(path).readlines()
     #     blockstart = lines.index(block + "\n")
