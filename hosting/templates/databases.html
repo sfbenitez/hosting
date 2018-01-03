@@ -98,13 +98,13 @@
                   {% for db_name in db_names_list %}
                   <tr class="odd gradeA">
                     <td>
-                      <a href="http://pandora/phppgadmin/redirect.php?subject=database&server=localhost%3A5432%3Aallow&database={{ db_name }}">{{ db_name }}</a>
+                      <a href="http://pandora/phppgadmin/redirect.php?subject=database&server=localhost%3A5432%3Aallow&database={{ db_name }}" target="_blank">{{ db_name }}</a>
                     </td>
                   </tr>
                   {% endfor %}
               </tbody>
             </table>
-            {% if db_number < 5 or request.session.premium and db_number < 10 %}
+            {% if db_number < 5 or request.session.premium == True and db_number < 10 %}
             <a href="#collapseTwo" data-toggle="collapse">
               <div class="widget-title">
                 <h5>New Database</h5>
