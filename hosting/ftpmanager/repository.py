@@ -4,16 +4,12 @@ import uuid
 from ftplib import FTP, all_errors
 from hosting.models import AppUserFtpUserRelation
 import psycopg2
+from users.admins import conector
 
 
 class FtpManagerRepository(object):
     def __init__(self, ftp_user, ftp_password):
-        self.conn = self._start_ftp_connection(ftp_user, ftp_password)
-
-    def _start_ftp_connection(self, ftp_user, ftp_password):
-        self.url='10.0.5.2'
-        self.conn = FTP(self.url, user=ftp_user, passwd=ftp_password)
-        return self.conn
+        self.conn = conector.FTPConector._initialize_ftp_connection(ftp_user, ftp_password)
 
     def mk_rem_dirs(self, pwd, path):
         self.conn.cwd(pwd)
@@ -60,15 +56,7 @@ class FtpManagerRepository(object):
 
 class ManageFTPUser(object):
     def __init__(self):
-        self.conn = self._initialize_ftp_db_connection()
-
-    def _initialize_ftp_db_connection(self):
-        if not hasattr(self, 'conn'):
-            return psycopg2.connect(dbname='proftp',
-                                    host='10.0.5.2',
-                                    user='proftp_user',
-                                    password='usuario')
-        return self.conn
+        self.conn = conector.PGConector._initialize_ftp_db_connection()
 
     def _make_user_relations(self, app_user, ftp_user):
         AppUserFtpUserRelation.objects.create(app_user=app_user, ftp_user=ftp_user)

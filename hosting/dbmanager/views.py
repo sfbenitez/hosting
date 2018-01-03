@@ -45,17 +45,17 @@ def db_list(request):
     db_user = repository.get_db_user_for_app_user(app_user)
     context['db_user'] = db_user
     context['db_password'] = db_password[:2]
-    try:
-        print(db_user)
-        print(db_password)
-        db_manager_repository = repository.DBManagerRepository(db_user, db_password)
-        db_names = db_manager_repository.get_db_names_for_user(db_user)
-        db_names_list =  [db_name[0] for db_name in db_names]
-        context['db_number'] = len(db_names_list)
-        context['db_names_list'] = db_names_list
-    except:
-        db_user_error = 'Error al autenticar con la base de datos'
-        context['db_user_auth_error'] = db_user_error
+    # try:
+    print(db_user)
+    print(db_password)
+    db_manager_repository = repository.DBManagerRepository(db_user, db_password)
+    db_names = db_manager_repository.get_db_names_for_user(db_user)
+    db_names_list =  [db_name[0] for db_name in db_names]
+    context['db_number'] = len(db_names_list)
+    context['db_names_list'] = db_names_list
+    # except:
+    #     db_user_error = 'Error al autenticar con la base de datos'
+    #     context['db_user_auth_error'] = db_user_error
     return render(request, 'databases.html', context)
 
 @login_required

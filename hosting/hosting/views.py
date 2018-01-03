@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
-from ldap3 import Server, Connection, ALL
+from users.admins import repository
 
 
 def index(request):
@@ -19,14 +19,11 @@ def index(request):
 			context={'error':True}
 		else:
 			login(request, user)
-			server = Server('10.0.5.2', get_info=ALL)
-			conn = Connection(server, 'cn=admin,dc=sergio,dc=gonzalonazareno,dc=org', 'usuario', auto_bind=True)
-			admin_gid = 2050
-			premium_gid = 2001
-			is_admin = conn.search('dc=sergio,dc=gonzalonazareno,dc=org', '(&(uid={})(gidNumber={}))'.format(username, admin_gid))
-			is_premium = conn.search('dc=sergio,dc=gonzalonazareno,dc=org', '(&(uid={})(gidNumber={}))'.format(username, premium_gid))
-			if is_admin == False:
-				if is_premium == False:
+			user_repository = repository.UsersRepository()
+			common_users, premium_users = user_repository.get_users()
+			admin_users = user_repository.get_admins()
+			if username not in admin_users:
+				if username not in premium == False:
 					return redirect('/user/dashboard')
 				else:
 					request.session["premium"] = True

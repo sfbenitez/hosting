@@ -1,19 +1,12 @@
 from hosting.models import AppUserDbUserRelation
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from users.admins import conector
 
 
 class CreateDBUser(object):
     def __init__(self):
-        self.conn = self._initialize_db_connection()
-
-    def _initialize_db_connection(self):
-        if not hasattr(self, 'conn'):
-            return psycopg2.connect(dbname='db_hosting',
-                                    host='10.0.5.2',
-                                    user='admin',
-                                    password='usuario')
-        return self.conn
+        self.conn = conector.PGConector._initialize_hosting_db_connection()
 
     def _make_user_relations(self, app_user, db_user):
         AppUserDbUserRelation.objects.create(app_user=app_user, db_user=db_user)
@@ -39,15 +32,7 @@ def get_db_user_for_app_user(user):
 class DBManagerRepository(object):
 
     def __init__(self, db_user, db_password):
-        self.conn = self._initialize_db_connection(db_user, db_password)
-
-    def _initialize_db_connection(self, db_user, db_password):
-        if not hasattr(self, 'conn'):
-            return psycopg2.connect(dbname='postgres',
-                                    host='10.0.5.2',
-                                    user=db_user,
-                                    password=db_password)
-        return self.conn
+        self.conn = conector.PGConector._initialize_db_connection(db_user, db_password)
 
     def get_db_names_for_user(self, username):
         cur = self.conn.cursor()
@@ -55,10 +40,10 @@ class DBManagerRepository(object):
             from pg_database
             join pg_authid on datdba = pg_authid.oid
             and rolname = '{}'""".format(username))
-        data = cur.fetchall()
+        db_list = cur.fetchall()
         cur.close()
         self.conn.close()
-        return data
+        return db_list
 
     def create_new_db_for_user(self, db_user, db_name):
         self.conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)

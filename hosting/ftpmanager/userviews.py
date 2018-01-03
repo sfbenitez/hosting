@@ -55,7 +55,7 @@ def dir_details(request, path):
 	except:
 		context['password_error'] = True
 		context['ftp_user'] = ftp_user
-		return render(request, "filemanager.html", context)
+		return redirect('index')
 	# Get ftp details
 	dirs, files, pwd = conn.get_dir_details(path)
 	# quota details
