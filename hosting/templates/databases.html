@@ -104,7 +104,7 @@
                   {% endfor %}
               </tbody>
             </table>
-            {%if db_number <= 5 or new_user %}
+            {% if db_number < 5 or request.session.premium and db_number < 10 %}
             <a href="#collapseTwo" data-toggle="collapse">
               <div class="widget-title">
                 <h5>New Database</h5>
