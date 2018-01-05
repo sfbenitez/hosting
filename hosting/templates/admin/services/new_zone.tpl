@@ -9,7 +9,7 @@ $TTL	86400
 	NS	minnie.hosting4all.org.
 	MX  10  minnie.hosting4all.org.
 
-$ORIGIN {{app_user}}.{{domain}}
+$ORIGIN {{domain}}.
 minnie	IN A 172.22.200.116
 www	IN CNAME minnie
 ftp IN CNAME minnie
