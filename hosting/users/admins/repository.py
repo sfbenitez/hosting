@@ -1,6 +1,7 @@
 from . import conector
 from django.template.loader import render_to_string
 from hosting import models
+import os
 
 class UsersRepository(object):
     def __init__(self):
