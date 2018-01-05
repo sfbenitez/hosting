@@ -7,4 +7,5 @@ from domains import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', views.index),
+    path('newdomain', views._new_domain),
 ]

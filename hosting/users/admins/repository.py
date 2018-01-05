@@ -1,5 +1,6 @@
 from . import conector
 from django.template.loader import render_to_string
+from hosting import models
 
 class UsersRepository(object):
     def __init__(self):
@@ -67,25 +68,60 @@ class UsersRepository(object):
 
 class ManageDomains(object):
 
+    def _reload_services():
+        # Needed
+        # ln -s /usr/sbin/a2ensite /usr/local/bin/
+        # ln -s /usr/sbin/apachectl /usr/local/bin/
+        # ln -s /usr/sbin/rndc /usr/local/bin/
+        # visudo
+        # hosting ALL = NOPASSWD: /usr/local/bin/apachectl graceful
+        # hosting ALL = NOPASSWD: /usr/local/bin/rndc reload
+        # hosting ALL = NOPASSWD: /usr/local/bin/a2ensite
+        os.system('sudo /usr/local/bin/apachectl graceful')
+        os.system('sudo /usr/local/bin/rndc reload')
+
+    def _activate_vhost(domain):
+        os.system('sudo /usr/local/bin/a2ensite {}'.format(domain))
+
+    def _mk_vhost_config_file(context):
+        zonefile_dir = '/etc/apache2/sites-available/'
+        template = 'admin/services/new_vhost.tpl'
+        open(vhostfile_dir + context['domain'], "w").write(render_to_string(template, context))
+
     def _mk_dom_config_file(zonefile, context):
         zonefile_dir = '/var/cache/bind/'
-        template = 'admin/dns/new_zone.tpl'
+        template = 'admin/services/new_zone.tpl'
         open(zonefile_dir + zonefile, "w").write(render_to_string(template, context))
 
-    def _add_dom(domain, app_user):
+    def _add_dom_to_dns_config(domain, app_user):
         path = '/etc/bind/named.conf.local'
         zonasdns = open(path,"a")
         zonefile='db.' + domain
-        zona='//{}\nzone "{}" {\n type master;\n file "{}.db";}\n;\n//{}\n'.format(app_user,domain,zonefile,app_user)
+        zona="""//%s\nzone "%s" {\ntype master;\n\tfile "%s";\n};\n//%s\n""" %(app_user,domain,zonefile,app_user)
         zonasdns.write(zona)
         zonasdns.close()
 
-    def _new_free_domain(self, domain, app_user):
+    def _make_app_user_domain_relation(domain, app_user):
+        models.appuserdomains.objects.create(app_user=app_user,domain_name=domain)
+
+    def new_domain(domain, app_user):
         context = {}
         context['domain'] = domain
         context['app_user'] = app_user
-        self._mk_dom_config_file(zonefile, context)
-        self._add_dom(domain, app_user)
+        context['document_root'] = '/srv/hosting/' + app_user
+        _mk_vhost_config_file(context)
+        _mk_dom_config_file(context)
+        _add_dom_to_dns_config(domain, app_user)
+        _make_app_user_domain_relation(domain, app_user)
+        _activate_vhost(domain)
+        _reload_services()
+
+    def get_users_domains(app_user):
+        user = models.appuserdomains.objects.get(app_user=app_user)
+        domain = user.domain_name
+        return domain
+
+
     # def _del_domain(domain, app_user):
     #     lines = open(path).readlines()
     #     blockstart = lines.index(block + "\n")
