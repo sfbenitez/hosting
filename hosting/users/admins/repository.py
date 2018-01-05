@@ -67,6 +67,19 @@ class UsersRepository(object):
 
 
 class ManageDomains(object):
+    def __init__(self, domain, app_user):
+        self.domain = domain
+        self.app_user = app_user
+        #DNS Values
+        self.zonefile = 'db.' + self.domain
+        self.zoneconffile = '/etc/bind/named.conf.local'
+        self.zonefile_dir = '/var/cache/bind/'
+        self.zonetemplate = 'admin/services/new_zone.tpl'
+        #Apache Values
+        self.vhostfile_dir = '/etc/apache2/sites-available/'
+        self.vhosttemplate = 'admin/services/new_vhost.tpl'
+        self.document_root = '/srv/hosting/' + self.app_user
+
 
     def _reload_services():
         # Needed
@@ -80,44 +93,39 @@ class ManageDomains(object):
         os.system('sudo /usr/local/bin/apachectl graceful')
         os.system('sudo /usr/local/bin/rndc reload')
 
-    def _activate_vhost(domain):
-        os.system('sudo /usr/local/bin/a2ensite {}'.format(domain))
+    def _activate_vhost(self):
+        os.system('sudo /usr/local/bin/a2ensite {}'.format(self.domain))
 
-    def _mk_vhost_config_file(context):
-        zonefile_dir = '/etc/apache2/sites-available/'
-        template = 'admin/services/new_vhost.tpl'
-        open(vhostfile_dir + context['domain'], "w").write(render_to_string(template, context))
+    def _mk_vhost_config_file(self):
+        context = {}
+        context['server_name'] = 'www.' + self.domain
+        context['document_root'] = self.document_root
+        open(self.vhostfile_dir + self.domain, "w").write(render_to_string(self.vhosttemplate, context))
 
-    def _mk_dom_config_file(zonefile, context):
-        zonefile_dir = '/var/cache/bind/'
-        template = 'admin/services/new_zone.tpl'
-        open(zonefile_dir + zonefile, "w").write(render_to_string(template, context))
+    def _mk_dom_config_file(self):
+        context = {}
+        context['domain'] = self.domain
+        open(self.zonefile_dir + self.zonefile, "w").write(render_to_string(template, context))
 
-    def _add_dom_to_dns_config(domain, app_user):
-        path = '/etc/bind/named.conf.local'
-        zonasdns = open(path,"a")
-        zonefile='db.' + domain
-        zona="""//%s\nzone "%s" {\ntype master;\n\tfile "%s";\n};\n//%s\n""" %(app_user,domain,zonefile,app_user)
+    def _add_dom_to_dns_config(self):
+        zonasdns = open(self.zoneconffile,"a")
+        zona="""//%s\nzone "%s" {\ntype master;\n\tfile "%s";\n};\n//%s\n""" %(self.app_user,self.domain,self.zonefile,self.app_user)
         zonasdns.write(zona)
         zonasdns.close()
 
-    def _make_app_user_domain_relation(domain, app_user):
-        models.appuserdomains.objects.create(app_user=app_user,domain_name=domain)
+    def _make_app_user_domain_relation(self):
+        models.appuserdomains.objects.create(app_user=self.app_user,domain_name=self.domain)
 
-    def new_domain(domain, app_user):
-        context = {}
-        context['domain'] = domain
-        context['app_user'] = app_user
-        context['document_root'] = '/srv/hosting/' + app_user
-        _mk_vhost_config_file(context)
-        _mk_dom_config_file(context)
-        _add_dom_to_dns_config(domain, app_user)
-        _make_app_user_domain_relation(domain, app_user)
-        _activate_vhost(domain)
+    def new_domain(self):
+        _mk_vhost_config_file()
+        _mk_dom_config_file()
+        _add_dom_to_dns_config()
+        _make_app_user_domain_relation()
+        _activate_vhost()
         _reload_services()
 
-    def get_users_domains(app_user):
-        user = models.appuserdomains.objects.get(app_user=app_user)
+    def get_users_domains(self):
+        user = models.appuserdomains.objects.get(app_user=self.app_user)
         domain = user.domain_name
         return domain
 

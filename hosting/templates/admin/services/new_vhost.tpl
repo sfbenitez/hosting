@@ -1,10 +1,10 @@
 <VirtualHost *:80>
 
-	ServerName {{servername}}
+	ServerName {{server_name}}
 	ServerAdmin sergioferretebenitez@hosting4all.org
-	DocumentRoot {{documentroot}}
+	DocumentRoot {{document_root}}
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log
-	CustomLog ${APACHE_LOG_DIR}/{{servername}}-access.log combined
+	CustomLog ${APACHE_LOG_DIR}/{{server_name}}-access.log combined
 
 </VirtualHost>
