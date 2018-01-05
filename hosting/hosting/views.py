@@ -23,11 +23,11 @@ def index(request):
 			common_users, premium_users = user_repository.get_users()
 			admin_users = user_repository.get_admins()
 			if username not in admin_users:
-				if username not in premium_users == False:
+				if username not in premium_users:
 					return redirect('/user/dashboard')
 				else:
 					request.session["premium"] = True
-					return redirect('/admin/dashboard')
+					return redirect('/user/dashboard')
 			else:
 				request.session["admin"] = True
 				return redirect('/admin/dashboard')
