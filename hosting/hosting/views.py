@@ -33,35 +33,35 @@ def register(request):
 
 	# Create App LDAP User
 	if premium == 'False':
-        # common users gidNumber
-        gidNumber = 2000
-    else:
-        # premium users gidNumber
-        gidNumber = 2001
+	# common users gidNumber
+		gidNumber = 2000
+	else:
+	# premium users gidNumber
+		gidNumber = 2001
 
-    user_repository = repository.UsersRepository()
-    password_hash = user_repository.get_pwhash_for_user(request.POST['password'])
-    uidNumber = user_repository.get_uidNumber_for_user()
-    user['uid'] = username
-    user['objectclass'] = ['top', 'inetOrgPerson', 'person', 'posixAccount']
-    user['user_attributes'] = {
-        'cn': username,
-        'uid': username,
-        'uidNumber': uidNumber,
-        'gidNumber': gidNumber,
-        'userPassword': password_hash,
-        'homeDirectory': '/srv/hosting/' + username,
-        'sn': surname,
-        'mail': mail,
-        'givenName': name}
-    user_repository.register_user(user)
+	user_repository = repository.UsersRepository()
+	password_hash = user_repository.get_pwhash_for_user(request.POST['password'])
+	uidNumber = user_repository.get_uidNumber_for_user()
+	user['uid'] = username
+	user['objectclass'] = ['top', 'inetOrgPerson', 'person', 'posixAccount']
+	user['user_attributes'] = {
+		'cn': username,
+		'uid': username,
+		'uidNumber': uidNumber,
+		'gidNumber': gidNumber,
+		'userPassword': password_hash,
+		'homeDirectory': '/srv/hosting/' + username,
+		'sn': surname,
+		'mail': mail,
+		'givenName': name}
+	user_repository.register_user(user)
 
 	# Auth, login and redirect new user
 	user = authenticate(username=app_user, password=app_password)
 	login(request, user)
 	if premium == 'False':
 		return redirect('/user/dashboard')
-    else:
+	else:
 		request.session["premium"] = True
 		return redirect('/user/dashboard')
 
