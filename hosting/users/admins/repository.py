@@ -126,12 +126,12 @@ class ManageDomains(object):
         models.appuserdomains.objects.create(app_user=self.app_user,domain_name=self.domain)
 
     def new_domain(self):
-        _mk_vhost_config_file()
-        _mk_dom_config_file()
-        _add_dom_to_dns_config()
-        _make_app_user_domain_relation()
-        _activate_vhost()
-        _reload_services()
+        self._mk_vhost_config_file()
+        self._mk_dom_config_file()
+        self._add_dom_to_dns_config()
+        self._make_app_user_domain_relation()
+        self._activate_vhost()
+        self._reload_services()
 
 def get_users_domains(app_user):
     user_domains = models.appuserdomains.objects.all()

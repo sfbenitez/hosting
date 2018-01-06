@@ -28,7 +28,7 @@ def register(request):
 												ftp_password,
 												premium)
 	# Create DB User
-	db_repository = dbrepository.CreateDBUser()
+	db_repository = CreateDBUser()
 	db_repository.create_db_user_for_app_user(app_user, db_user, db_password)
 
 	# Create App LDAP User
@@ -40,21 +40,28 @@ def register(request):
 		gidNumber = 2001
 
 	user_repository = repository.UsersRepository()
-	password_hash = user_repository.get_pwhash_for_user(request.POST['password'])
+	password_hash = user_repository.get_pwhash_for_user(app_password)
 	uidNumber = user_repository.get_uidNumber_for_user()
-	user['uid'] = username
+	# LDAP User Dictionary
+	user = {}
+	user['uid'] = app_user
 	user['objectclass'] = ['top', 'inetOrgPerson', 'person', 'posixAccount']
 	user['user_attributes'] = {
-		'cn': username,
-		'uid': username,
+		'cn': app_user,
+		'uid': app_user,
 		'uidNumber': uidNumber,
 		'gidNumber': gidNumber,
 		'userPassword': password_hash,
-		'homeDirectory': '/srv/hosting/' + username,
+		'homeDirectory': '/srv/hosting/' + app_user,
 		'sn': surname,
-		'mail': mail,
+		'mail': email,
 		'givenName': name}
 	user_repository.register_user(user)
+
+	# Create new domain
+	dom_manager = repository.ManageDomains(domain, app_user)
+    dom_manager.new_domain()
+
 
 	# Auth, login and redirect new user
 	user = authenticate(username=app_user, password=app_password)
