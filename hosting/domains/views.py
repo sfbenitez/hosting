@@ -13,12 +13,13 @@ def index(request):
         'currenttopmenu' : topmenu,
     }
     app_user = request.user.username
-    listadom = repository.ManageDomains.get_users_domains(app_user)
+    listadom = repository.get_users_domains(app_user)
     context['domains'] = listadom
     return render(request, 'domains.html', context)
 
 def _new_domain(request):
     app_user = request.user.username
-    domain = 'ferrete.org'
-    dom_manager = repository.ManageDomains.new_domain(domain, app_user)
+    domain = request.POST['domain']
+    dom_manager = repository.ManageDomains(domain, app_user)
+    dom_manager.new_domain()
     return index(request)
