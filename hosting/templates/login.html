@@ -38,7 +38,7 @@
           <span class="pull-right"><input type="submit" class="btn btn-success" value="Login" /></span>
         </div>
       </form>
-      <form id="recoverform" action="#" class="register-from">
+      <form id="recoverform" action="/register" class="register-from" method="post">
         <hr>
         {% csrf_token %}
         <div class="personal_info">
@@ -119,7 +119,7 @@
         <hr>
         <div class="form-actions-recover">
             <span class="pull-left"><a href="#" class="flip-link btn btn-success" id="to-login">&laquo; Back to login</a></span>
-            <span class="pull-right"><a class="btn btn-info"/>Sing Up</a></span>
+            <span class="pull-right"><input type="submit" class="btn btn-success" value="Sing UP" /></span>
         </div>
       </form>
     </div>

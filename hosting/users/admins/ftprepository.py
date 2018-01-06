@@ -68,7 +68,7 @@ class ManageFTPUser(object):
         return int(lastuid)
 
     def _create_quota_for_ftp_user(self, ftp_user, is_premium):
-        if is_premium == False:
+        if is_premium == 'False':
             #common user quota limit
             ftp_quota = 50728640 # 50MB
         else:

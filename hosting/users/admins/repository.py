@@ -58,6 +58,14 @@ class UsersRepository(object):
         auth_conn.add(user_dn, user['objectclass'], user['user_attributes'])
         auth_conn.unbind()
 
+    def register_user(self, user):
+        # App user
+        auth_conn = conector.LdapConector.rebind_to_ldap_auto_auth_connection(self.conn)
+        # That comma is really important
+        user_dn = 'uid=' + user['uid'] + ',' + self.ldap_users_base
+        auth_conn.add(user_dn, user['objectclass'], user['user_attributes'])
+        auth_conn.unbind()
+
 
     def delete_user(self, ldap_auth_user_password, user):
         auth_conn = conector.LdapConector.rebind_to_ldap_auth_connection(self.conn, ldap_auth_user_password)

@@ -6,21 +6,65 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
 from users.admins import repository
+from users.admins.ftprepository import ManageFTPUser
+from users.admins.dbrepository import CreateDBUser
 
 def register(request):
-	request.POST["domain"]
-	request.POST["givenname"]
-	request.POST["surname"]
-	request.POST["email"]
-	request.POST["app_user"]
-	request.POST["app_password"]
-	request.POST["ftp_user"]
-	request.POST["ftp_password"]
-	request.POST["db_user"]
-	request.POST["db_password"]
-	request.POST["premium"]
+	domain = request.POST["domain"]
+	givenname = request.POST["givenname"]
+	surname = request.POST["surname"]
+	email = request.POST["email"]
+	app_user = request.POST["app_user"]
+	app_password = request.POST["app_password"]
+	ftp_user = request.POST["ftp_user"]
+	ftp_password = request.POST["ftp_password"]
+	db_user = request.POST["db_user"]
+	db_password = request.POST["db_password"]
+	premium = request.POST["premium"]
+	# Create FTP User
+	ftp_repository = ManageFTPUser()
+	ftp_repository.create_ftp_user_for_app_user(app_user,
+												ftp_user,
+												ftp_password,
+												premium)
+	# Create DB User
+	db_repository = dbrepository.CreateDBUser()
+	db_repository.create_db_user_for_app_user(app_user, db_user, db_password)
 
-	return render(request,'register.html')
+	# Create App LDAP User
+	if premium == 'False':
+        # common users gidNumber
+        gidNumber = 2000
+    else:
+        # premium users gidNumber
+        gidNumber = 2001
+
+    user_repository = repository.UsersRepository()
+    password_hash = user_repository.get_pwhash_for_user(request.POST['password'])
+    uidNumber = user_repository.get_uidNumber_for_user()
+    user['uid'] = username
+    user['objectclass'] = ['top', 'inetOrgPerson', 'person', 'posixAccount']
+    user['user_attributes'] = {
+        'cn': username,
+        'uid': username,
+        'uidNumber': uidNumber,
+        'gidNumber': gidNumber,
+        'userPassword': password_hash,
+        'homeDirectory': '/srv/hosting/' + username,
+        'sn': surname,
+        'mail': mail,
+        'givenName': name}
+    user_repository.register_user(user)
+	
+	# Auth, login and redirect new user
+	user = authenticate(username=request.POST["username"], password=request.POST["password"])
+	login(request, user)
+	if premium == 'False':
+		return redirect('/user/dashboard')
+    else:
+		request.session["premium"] = True
+		return redirect('/user/dashboard')
+
 
 def singin(request):
 	context={'next':"/"}

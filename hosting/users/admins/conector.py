@@ -19,6 +19,13 @@ class LdapConector(object):
         conn.rebind(ldap_auth_user, ldap_auth_user_password)
         return conn
 
+    def rebind_to_ldap_auto_auth_connection(conn):
+        # DN Auth user
+        ldap_auth_user = 'cn=admin,dc=sergio,dc=gonzalonazareno,dc=org'
+        ldap_auth_user_password = 'usuario'
+        conn.rebind(ldap_auth_user, ldap_auth_user_password)
+        return conn
+
 ### FTP Conector
 class FTPConector(object):
 
