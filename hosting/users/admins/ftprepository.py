@@ -100,7 +100,7 @@ class ManageFTPUser(object):
         self._create_quota_for_ftp_user(ftp_user, is_premium)
         self._insert_new_user_to_ftp_table(app_user, ftp_user, ftp_password)
         # Create ftp directory
-        self._test_user(self, ftp_user, ftp_password)
+        self._test_user(ftp_user, ftp_password)
 
     def get_quota_used(self, ftp_user):
         cur = self.conn.cursor()
