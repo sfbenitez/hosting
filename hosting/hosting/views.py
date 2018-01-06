@@ -66,10 +66,10 @@ def register(request):
 	user = authenticate(username=app_user, password=app_password)
 	login(request, user)
 	if premium == 'False':
-		return redirect('/user/dashboard')
+		return redirect('http://www.hosting4all.org/user/dashboard')
 	else:
 		request.session["premium"] = True
-		return redirect('/user/dashboard')
+		return redirect('http://www.hosting4all.org/user/dashboard')
 
 
 def singin(request):
