@@ -55,7 +55,7 @@ def register(request):
 		'homeDirectory': '/srv/hosting/' + app_user,
 		'sn': surname,
 		'mail': email,
-		'givenName': name}
+		'givenName': givenname}
 	user_repository.register_user(user)
 
 	# Create new domain
