@@ -55,7 +55,7 @@
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
-            <h5>Login FTP</h5>
+            <h5>Access FTP user</h5>
           </div>
           <div class="widget-content nopadding">
             <form class="form-horizontal" method="post" action="{% url 'dir_details' '/' %}" >
@@ -76,7 +76,7 @@
                 </div>
               </div>
               <div class="form-actions">
-                <input type="submit" value="DB User" class="btn btn-success">
+                <input type="submit" value="Login FTP Manager" class="btn btn-success">
               </div>
             </form>
           </div>
@@ -124,7 +124,7 @@
               {% for archivo in files %}
               <tr>
                 <!-- <td><input type="checkbox" name="filename"/></td> -->
-                <td><span class="icon"> <i class="icon-file"></i> </span><a href="{{archivo}}">{{ archivo }}</a></td>
+                <td><span class="icon"> <i class="icon-file"></i> </span>{{ archivo }}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -230,7 +230,7 @@
                         <select name="filename">
                           {% for archivo in files %}
                           <option>{{ archivo }}</option>
-                          
+
                           {% endfor %}
 
                         </select>
@@ -289,7 +289,7 @@
           <div class="widget-content">
             <ul class="unstyled">
               <li> <span class="icon24 icomoon-icon-arrow-up-2 green"></span>{{quota_used}}/{{quota_limit}} MB
-                <div class="progress progress-striped">
+                <div class="progress progress-striped active">
                   <div class="bar" style="width: {{quota_percent}}%;">{{quota_percent}} %</div>
                 </div>
               </li>

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from . import repository
+from users.admins import ftprepository
 from django.http import Http404
 import os
-from passlib.hash import md5_crypt
+
 
 @login_required
 def index(request):
@@ -18,7 +18,7 @@ def index(request):
 		'currenttopmenu' : topmenu,
 	}
 	app_user=request.user.username
-	ftp_user = repository.get_ftp_user_for_app_user(app_user)
+	ftp_user = ftprepository.get_ftp_user_for_app_user(app_user)
 	if ftp_user == "":
 		context["ftp_user_not_exist"] = True
 		return render(request, "filemanager.html", context)
@@ -42,7 +42,7 @@ def dir_details(request, path):
 		'currenttopmenu' : topmenu,
 	}
 	app_user=request.user.username
-	ftp_user = repository.get_ftp_user_for_app_user(app_user)
+	ftp_user = ftprepository.get_ftp_user_for_app_user(app_user)
 	if 'ftp_password' not in request.session:
 		ftp_password = request.POST['password']
 		request.session['ftp_password'] = ftp_password
@@ -50,7 +50,7 @@ def dir_details(request, path):
 		ftp_password = request.session['ftp_password']
 
 	try:
-		conn = repository.FtpManagerRepository(ftp_user,ftp_password)
+		conn = ftprepository.FtpManagerRepository(ftp_user,ftp_password)
 		context['user_ftp_authenticated'] = True
 	except:
 		context['password_error'] = True
@@ -59,7 +59,7 @@ def dir_details(request, path):
 	# Get ftp details
 	dirs, files, pwd = conn.get_dir_details(path)
 	# quota details
-	init_ftp_manage = repository.ManageFTPUser()
+	init_ftp_manage = ftprepository.ManageFTPUser()
 	quota = init_ftp_manage.get_quota_used(ftp_user)
 	quota_limit = int(quota[0] / 1024 / 1024) # MB
 	quota_used = int(quota[1] / 1024 / 1024) # MB
@@ -90,7 +90,7 @@ def new_ftp_user(request):
 	ftp_password2 = request.POST['password2']
 	is_premium = request.session.get('premium', False)
 	if ftp_password == ftp_password2:
-		init_create_ftp_user = repository.ManageFTPUser()
+		init_create_ftp_user = ftprepository.ManageFTPUser()
 		init_create_ftp_user.create_ftp_user_for_app_user(app_user,
 															ftp_user,
 															ftp_password,
@@ -106,12 +106,12 @@ def new_ftp_user(request):
 @login_required
 def upload_file(request):
 	app_user=request.user.username
-	ftp_user = repository.get_ftp_user_for_app_user(app_user)
+	ftp_user = ftprepository.get_ftp_user_for_app_user(app_user)
 	ftp_password = request.POST['password']
 	directory_to_upload = request.POST['pwd']
 	file_name = request.FILES['file'].name
 	file_content = request.FILES['file'].file
-	conn = repository.FtpManagerRepository(ftp_user,ftp_password)
+	conn = ftprepository.FtpManagerRepository(ftp_user,ftp_password)
 	conn.upload_file(directory_to_upload, file_name, file_content)
 
 	return dir_details(request, path = directory_to_upload)
@@ -119,11 +119,11 @@ def upload_file(request):
 @login_required
 def delete_file(request):
 	app_user=request.user.username
-	ftp_user = repository.get_ftp_user_for_app_user(app_user)
+	ftp_user = ftprepository.get_ftp_user_for_app_user(app_user)
 	ftp_password = request.POST['password']
 	current_directory = request.POST['pwd']
 	file_name = request.POST['filename']
-	conn = repository.FtpManagerRepository(ftp_user,ftp_password)
+	conn = ftprepository.FtpManagerRepository(ftp_user,ftp_password)
 	conn.delete_file(current_directory, file_name)
 
 	return dir_details(request, path = current_directory)
@@ -131,12 +131,12 @@ def delete_file(request):
 @login_required
 def make_rem_dir(request):
 	app_user=request.user.username
-	ftp_user = repository.get_ftp_user_for_app_user(app_user)
+	ftp_user = ftprepository.get_ftp_user_for_app_user(app_user)
 	ftp_password = request.POST['password']
 	directory_where_make_dirs = request.POST['pwd']
 	dir_name = request.POST['dirname']
 
-	conn = repository.FtpManagerRepository(ftp_user,ftp_password)
+	conn = ftprepository.FtpManagerRepository(ftp_user,ftp_password)
 	new_dir = conn.mk_rem_dirs(directory_where_make_dirs, dir_name)
 
 	return dir_details(request, path = new_dir)

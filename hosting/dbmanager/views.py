@@ -2,7 +2,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import psycopg2
-from . import repository
+from users.admins import dbrepository
 
 @login_required
 def index(request):
@@ -17,7 +17,7 @@ def index(request):
     app_user=request.user.username
     print(app_user)
     try:
-        db_user = repository.get_db_user_for_app_user(app_user)
+        db_user = dbrepository.get_db_user_for_app_user(app_user)
         print('Funciona: ' + db_user)
     except:
         db_user = None
@@ -42,13 +42,13 @@ def db_list(request):
     }
     db_password=request.POST['password']
     app_user=request.user.username
-    db_user = repository.get_db_user_for_app_user(app_user)
+    db_user = dbrepository.get_db_user_for_app_user(app_user)
     context['db_user'] = db_user
     context['db_password'] = db_password[:2]
     # try:
     print(db_user)
     print(db_password)
-    db_manager_repository = repository.DBManagerRepository(db_user, db_password)
+    db_manager_repository = dbrepository.DBManagerRepository(db_user, db_password)
     db_names = db_manager_repository.get_db_names_for_user(db_user)
     db_names_list =  [db_name[0] for db_name in db_names]
     context['db_number'] = len(db_names_list)
@@ -71,7 +71,7 @@ def new_db_user(request):
     app_user=request.user.username
     db_user=request.POST['username']
     db_password=request.POST['pwd']
-    init_create_db_user = repository.CreateDBUser()
+    init_create_db_user = dbrepository.CreateDBUser()
     create_db_user = init_create_db_user.create_db_user_for_app_user(app_user, db_user, db_password)
     context['db_user'] = db_user
     context['new_user'] = True
@@ -82,8 +82,8 @@ def new_db(request):
     db_password=request.POST['password']
     db_name=request.POST['newdbname']
     app_user=request.user.username
-    db_user = repository.get_db_user_for_app_user(app_user)
-    db_manager_repository = repository.DBManagerRepository(db_user, db_password)
+    db_user = dbrepository.get_db_user_for_app_user(app_user)
+    db_manager_repository = dbrepository.DBManagerRepository(db_user, db_password)
     create_db = db_manager_repository.create_new_db_for_user(db_user, db_name)
     if create_db == "Database already exist":
         print('Error al crear la base de datos {}_{}'.format(db_user, db_name))
@@ -97,7 +97,7 @@ def del_db(request):
     db_name=request.POST['deletedatabase']
     print(db_name)
     app_user=request.user.username
-    db_user = repository.get_db_user_for_app_user(app_user)
-    db_manager_repository = repository.DBManagerRepository(db_user, db_password)
+    db_user = dbrepository.get_db_user_for_app_user(app_user)
+    db_manager_repository = dbrepository.DBManagerRepository(db_user, db_password)
     create_db = db_manager_repository.delete_db_for_user(db_name)
     return redirect('/user/databases')

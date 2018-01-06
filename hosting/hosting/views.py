@@ -8,6 +8,18 @@ from django.contrib.auth import authenticate,login
 from users.admins import repository
 
 def register(request):
+	request.POST["domain"]
+	request.POST["givenname"]
+	request.POST["surname"]
+	request.POST["email"]
+	request.POST["app_user"]
+	request.POST["app_password"]
+	request.POST["ftp_user"]
+	request.POST["ftp_password"]
+	request.POST["db_user"]
+	request.POST["db_password"]
+	request.POST["premium"]
+
 	return render(request,'register.html')
 
 def singin(request):
