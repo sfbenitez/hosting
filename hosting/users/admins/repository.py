@@ -109,12 +109,13 @@ class ManageDomains(object):
         context = {}
         context['server_name'] = 'www.' + self.domain
         context['document_root'] = self.document_root
-        open(self.vhostfile_dir + self.domain, "w").write(render_to_string(self.vhosttemplate, context))
+        vhostfile = self.domain + '.conf'
+        open(self.vhostfile_dir + vhostfile, "w").write(render_to_string(self.vhosttemplate, context))
 
     def _mk_dom_config_file(self):
         context = {}
         context['domain'] = self.domain
-        open(self.zonefile_dir + self.zonefile, "w").write(render_to_string(template, context))
+        open(self.zonefile_dir + self.zonefile, "w").write(render_to_string(self.zonetemplate, context))
 
     def _add_dom_to_dns_config(self):
         zonasdns = open(self.zoneconffile,"a")

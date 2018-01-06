@@ -79,9 +79,10 @@ class ManageFTPUser(object):
         self.conn.commit()
         cur.close()
 
-    def create_ftp_user_for_app_user(self, app_user, ftp_user, ftp_password, is_premium):
-        self._make_user_relations(app_user, ftp_user)
-        self._create_quota_for_ftp_user(ftp_user, is_premium)
+    def _test_user(self, ftp_user, ftp_password):
+        conector.FTPConector._initialize_ftp_connection(ftp_user, ftp_password)
+
+    def _insert_new_user_to_ftp_table(self, app_user, ftp_user, ftp_password):
         ftp_user_uid = self._get_last_ftp_user_uid() + 1;
         basedir = '/srv/hosting/'
         ftp_user_workdir = basedir + app_user
@@ -93,6 +94,13 @@ class ManageFTPUser(object):
         self.conn.commit()
         cur.close()
         self.conn.close()
+
+    def create_ftp_user_for_app_user(self, app_user, ftp_user, ftp_password, is_premium):
+        self._make_user_relations(app_user, ftp_user)
+        self._create_quota_for_ftp_user(ftp_user, is_premium)
+        self._insert_new_user_to_ftp_table(app_user, ftp_user, ftp_password)
+        # Create ftp directory
+        self._test_user(self, ftp_user, ftp_password):
 
     def get_quota_used(self, ftp_user):
         cur = self.conn.cursor()
