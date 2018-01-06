@@ -7,8 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
 from users.admins import repository
 
+def register(request):
+	return render(request,'register.html')
 
-def index(request):
+def singin(request):
 	context={'next':"/"}
 	if 'next' in request.GET:
 		context={'next':request.GET["next"]}

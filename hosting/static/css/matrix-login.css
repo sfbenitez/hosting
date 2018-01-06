@@ -40,21 +40,22 @@ hr{ border-top-color:#dadada;}
 .bg_lh{ background:#b6b3b3;}
 
 body { background-color:#2E363F;    padding: 0;    margin-top:10%;}
-#logo, #loginbox {    width: 32%;    margin-left: auto;    margin-right: auto;    position: relative;}
+#logo {    width: 32%;    margin-left: auto;    margin-right: auto;    position: relative;}
+#loginbox {    width: 42%;    margin-left: auto;    margin-right: auto;    position: relative;}
 #logo img {  margin: 0 auto;    display: block;}
 #loginbox { overflow: hidden !important;    text-align: left;    position: relative; }
 #loginbox form{ width:100%; background:#2E363F; position:relative; top:0; left:0; }
 #loginbox .form-actions { padding: 14px 20px 15px;}
-#loginbox .form-actions .pull-left { margin-top:0px;}
+#loginbox .form-actions .pull-left {position: relative; float: left; margin-top:0px;}
 #loginbox form#loginform { z-index: 200; display:block;}
-#loginbox form#recoverform { z-index: 100;     display:none;}
-#loginbox form#recoverform .form-actions {    margin-top: 10px;}
+#loginbox form#recoverform { z-index: 100;  display:none; }
+#loginbox form#recoverform .form-actions { margin-top: 10px;}
 #loginbox .main_input_box { margin:0 auto; text-align:center; font-size:13px;}
 #loginbox .main_input_box .add-on{  padding:9px 9px; *line-height:31px; vertical-align:top; color:#fff;  width:30px; display:inline-block;}
 #loginbox .main_input_box input{ height:30px; vertical-align:top; border:0px; display:inline-block; width:75%; line-height:22px;  margin-bottom:3px;}
 #loginbox .controls{ padding:0 20px;}
 #loginbox .control-group{ padding:20px 0; margin-bottom:0px;}
-.form-vertical, .form-actions {  margin-bottom: 0; background:none; border-top:1px solid #3f4954; }
+.form-vertical, .form-actions {  margin-top: 10px; background:none; border-top:1px solid #3f4954; }
 #loginbox .normal_text{ padding:15px 10px; text-align:center; font-size:14px; line-height:20px; background:#2E363F; color:#fff; }
 @media (max-width:800px){
 #logo { width: 60%; }
@@ -65,3 +66,8 @@ body { background-color:#2E363F;    padding: 0;    margin-top:10%;}
 #loginbox{ width:90%}
 #loginbox .control-group{ padding:8px 0; margin-bottom:0px;}
 }
+
+#loginbox form#recoverform .personal_info { width: 400px; float:left;padding-bottom: 30px}
+#loginbox form#recoverform .services_info {  width: 400px; float: right;padding-bottom: 21px}
+hr {background:none; border-top:1px solid #3f4954; border-bottom: 1px solid #3f4954;}
+label {color: white; padding-left: 30px;}

@@ -21,7 +21,9 @@ from hosting import views
 
 urlpatterns = [
     path('admin/', include('admins.urls')),
-    path('', views.index),
+    path('', views.singin),
+    path('login', views.singin),
+    path('register', views.register),
     path('user/',  include('users.urls')),
     path('logout/',views.salir),
 ]

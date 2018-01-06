@@ -82,7 +82,7 @@ class ManageDomains(object):
         self.document_root = '/srv/hosting/' + self.app_user
 
 
-    def _reload_services():
+    def _reload_services(self):
         # Needed
         # ln -s /usr/sbin/a2ensite /usr/local/bin/
         # ln -s /usr/sbin/apachectl /usr/local/bin/
@@ -125,10 +125,13 @@ class ManageDomains(object):
         _activate_vhost()
         _reload_services()
 
-    def get_users_domains(self):
-        user = models.appuserdomains.objects.get(app_user=self.app_user)
-        domain = user.domain_name
-        return domain
+def get_users_domains(app_user):
+    user_domains = models.appuserdomains.objects.all()
+    domain_list = []
+    for i in user_domains:
+        if i.app_user == app_user:
+            domain_list.append(i.domain_name)
+    return domain_list
 
 
     # def _del_domain(domain, app_user):
