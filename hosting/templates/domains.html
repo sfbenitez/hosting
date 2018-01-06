@@ -6,7 +6,32 @@
     <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="/user/domains" class="{{currenttopmenu}}">Domains</a></div>
     <h1>Domains</h1>
   </div>
-  {{domains}}
+  <div class="container-fluid">
+    <hr>
+
+    <div class="row-fluid">
+      <div class="span6">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th-list"></i> </span>
+            <h5>Domain list: </h5>
+          </div>
+          <div class="widget-content ">
+            <table class="table table-bordered table-striped with-check">
+              <tbody>
+                {% for domain in domains %}
+
+                  <tr>
+                    <!-- <td><input type="checkbox" name="filename"/></td> -->
+                    <td><span class="icon"> <i class="icon-folder-close"></i> </span><a href="http://www.{{domain}}">{{domain}}</a></td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <!--end-main-container-part-->
 {% endblock %}
