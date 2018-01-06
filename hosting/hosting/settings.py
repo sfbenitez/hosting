@@ -26,7 +26,7 @@ SECRET_KEY = '&0)9tcdln%8hl_etrw_d10kr35l97nl8)%tdgu3ka6yb)qu-r4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.hosting4all.org']
 
 
 # Application definition
