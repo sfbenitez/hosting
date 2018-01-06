@@ -55,9 +55,9 @@ def register(request):
         'mail': mail,
         'givenName': name}
     user_repository.register_user(user)
-	
+
 	# Auth, login and redirect new user
-	user = authenticate(username=request.POST["username"], password=request.POST["password"])
+	user = authenticate(username=app_user, password=app_password)
 	login(request, user)
 	if premium == 'False':
 		return redirect('/user/dashboard')
