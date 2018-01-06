@@ -60,8 +60,7 @@ def register(request):
 
 	# Create new domain
 	dom_manager = repository.ManageDomains(domain, app_user)
-    dom_manager.new_domain()
-
+	dom_manager.new_domain()
 
 	# Auth, login and redirect new user
 	user = authenticate(username=app_user, password=app_password)
