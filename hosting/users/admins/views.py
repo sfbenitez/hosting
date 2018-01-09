@@ -4,6 +4,18 @@ from django.shortcuts import render, redirect
 from . import repository
 
 @login_required
+def index(request):
+    tittle='Dashboard'
+    sidebaractive='active'
+    topmenu='current'
+    context = {
+        'tittle' : tittle,
+        'activedashboard' : sidebaractive,
+    }
+    return render(request, 'index.html', context)
+
+
+@login_required
 def appusers(request):
     title='Hosting: App User Management'
     sidebaractive='active'
