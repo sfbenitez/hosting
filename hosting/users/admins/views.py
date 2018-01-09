@@ -69,5 +69,5 @@ def _deluser(request):
     ldap_password = request.POST['ldap_password']
 
     user_repository = repository.UsersRepository()
-    user_repository.delete_user(ldap_password, username)
+    user_repository._delete_app_user(ldap_password, username)
     return redirect('/admin/appusers')

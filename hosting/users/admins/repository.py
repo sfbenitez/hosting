@@ -67,12 +67,14 @@ class UsersRepository(object):
         auth_conn.unbind()
 
 
-    def delete_user(self, ldap_auth_user_password, user):
+    def _delete_app_user(self, ldap_auth_user_password, user):
         auth_conn = conector.LdapConector.rebind_to_ldap_auth_connection(self.conn, ldap_auth_user_password)
         # That comma is really important
         user_dn = 'uid=' + user + ',' + self.ldap_users_base
         auth_conn.delete(user_dn)
         auth_conn.unbind()
+
+    # def delete_user(self):
 
 
 class ManageDomains(object):
@@ -117,9 +119,16 @@ class ManageDomains(object):
         context['domain'] = self.domain
         open(self.zonefile_dir + self.zonefile, "w").write(render_to_string(self.zonetemplate, context))
 
+    def _del_dom_from_dns_config(self):
+        zonasdns = open(self.zoneconffile).readlines()
+        start = zonasdns.index("""zone \"{}\"\n""".format(self.domain))
+        final = start + 5
+        del(zonasdns[start:final])
+        open(self.zoneconffile, 'w').writelines(zonasdns)
+
     def _add_dom_to_dns_config(self):
         zonasdns = open(self.zoneconffile,"a")
-        zona="""//%s\nzone "%s" {\ntype master;\n\tfile "%s";\n};\n//%s\n""" %(self.app_user,self.domain,self.zonefile,self.app_user)
+        zona="""zone "%s" \n{\n\ttype master;\n\tfile "%s";\n};\n""" %(self.app_user,self.domain,self.zonefile,self.app_user)
         zonasdns.write(zona)
         zonasdns.close()
 
