@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'dbmanager.app.DBmanagerConfig',
     'ftpmanager.app.FtpmanagerConfig',
     'domains.app.DomainsConfig',
-    'admins.app.AdminsConfig',
+    'cmslist.app.CmslistConfig',
     'users.app.UsersConfig',
     'hosting.app.HostingConfig',
     'django_python3_ldap',

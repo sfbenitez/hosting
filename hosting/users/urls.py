@@ -11,6 +11,7 @@ urlpatterns = [
     path('ftpmanager/', include('ftpmanager.urls')),
     path('domains/', include('domains.urls')),
     path('databases/', include('dbmanager.urls')),
+    path('apps/', include('cmslist.urls')),
     path('stats', views.stats),
     # Admin users paths
 

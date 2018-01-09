@@ -20,7 +20,7 @@ from django.urls import path
 from hosting import views
 
 urlpatterns = [
-    path('admin/', include('admins.urls')),
+    path('admin/', include('users.admins.urls')),
     path('', views.singin),
     path('login', views.singin),
     path('register', views.register),
