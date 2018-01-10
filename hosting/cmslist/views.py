@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 @login_required
 def index(request):
-    tittle='CMS List'
+    title='CMS List'
     sidebaractive='active'
     topmenu='current'
     context = {
