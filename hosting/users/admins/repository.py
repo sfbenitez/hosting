@@ -2,6 +2,7 @@ from . import conector
 from django.template.loader import render_to_string
 from hosting import models
 import os
+from libgravatar import Gravatar
 
 class UsersRepository(object):
     def __init__(self):
@@ -151,12 +152,8 @@ def get_users_domains(app_user):
             domain_list.append(i.domain_name)
     return domain_list
 
-
-    # def _del_domain(domain, app_user):
-    #     lines = open(path).readlines()
-    #     blockstart = lines.index(block + "\n")
-    #     print blockstart
-    #     blockend = blockstart+6
-    #     print blockend
-    #     del(lines[blockstart:blockend])
-    #     open(path, 'w+').writelines(lines)
+def get_users_avatar(app_user_mail):
+    print(app_user_mail.lower())
+    gravatar_mail = Gravatar(app_user_mail.lower())
+    avatar_url = gravatar_mail.get_image(size=150, default='http://www.charliejsanchez.com/wp-content/uploads/2017/12/default.jpg')
+    return avatar_url

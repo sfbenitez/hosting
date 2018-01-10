@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
+from users.admins.repository import get_users_avatar
+from users.admins.ftprepository import get_ftp_user_for_app_user
+from users.admins.dbrepository import get_db_user_for_app_user
 @login_required
 def index(request):
     tittle='Dashboard'
@@ -14,28 +16,18 @@ def index(request):
     return render(request, 'index.html', context)
 
 @login_required
-def filemanager(request):
-    tittle='File Manager'
+def user_profile(request):
+    tittle='Dashboard'
     sidebaractive='active'
     topmenu='current'
     context = {
         'tittle' : tittle,
-        'activefilemanager' : sidebaractive,
-        'currenttopmenu' : topmenu,
+        'activedashboard' : sidebaractive,
     }
-    return render(request, 'filemanager.html', context)
-
-@login_required
-def databases(request):
-    tittle='DB Manager'
-    sidebaractive='active'
-    topmenu='current'
-    context = {
-        'tittle' : tittle,
-        'activedatabases' : sidebaractive,
-        'currenttopmenu' : topmenu,
-    }
-    return render(request, 'databases.html', context)
+    context['avatar_url'] = get_users_avatar(request.user.email)
+    context['ftp_user'] = get_ftp_user_for_app_user(request.user.username)
+    context['db_user'] = get_db_user_for_app_user(request.user.username)
+    return render(request, 'profile.html', context)
 
 @login_required
 def stats(request):

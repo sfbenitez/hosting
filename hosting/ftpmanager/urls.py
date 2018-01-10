@@ -16,13 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.urls import path
 from django.contrib import admin
-from . import userviews
+from . import views
 
 urlpatterns = [
-    path('', userviews.index, name='index'),
-    url(r'^directory(?P<path>.+)$', userviews.dir_details, name='dir_details'),
-    path('newuser', userviews.new_ftp_user),
-    path('upload', userviews.upload_file, name='upload'),
-    path('delete', userviews.delete_file, name='delete_file'),
-    path('mkremdir', userviews.make_rem_dir, name='mkremdir'),
+    path('', views.index, name='index'),
+    url(r'^directory(?P<path>.+)$', views.dir_details, name='dir_details'),
+    path('newuser', views.new_ftp_user),
+    path('upload', views.upload_file, name='upload'),
+    path('delete', views.delete_file, name='delete_file'),
+    path('mkremdir', views.make_rem_dir, name='mkremdir'),
 ]

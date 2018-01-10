@@ -12,6 +12,7 @@ urlpatterns = [
     path('domains/', include('domains.urls')),
     path('databases/', include('dbmanager.urls')),
     path('apps/', include('cmslist.urls')),
+    path('profile', views.user_profile, name = 'profile'),
     path('stats', views.stats),
     # Admin users paths
 

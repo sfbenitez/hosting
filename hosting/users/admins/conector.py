@@ -6,7 +6,7 @@ import psycopg2
 class LdapConector(object):
 
     def initialize_ldap_connection():
-        host = '10.0.5.2'
+        host = '172.22.200.127'
         ldap_user = ''
         ldap_password = ''
         server = Server(host, get_info=ALL)
@@ -30,8 +30,9 @@ class LdapConector(object):
 class FTPConector(object):
 
     def _initialize_ftp_connection(ftp_user, ftp_password):
-        host='10.0.5.2'
-        conn = FTP(host, user=ftp_user, passwd=ftp_password)
+        # host="172.22.200.127"
+        conn = FTP('172.22.200.127', user=ftp_user, passwd=ftp_password)
+        conn.set_pasv(False)
         return conn
 
 ### Postgresql Conector
@@ -39,18 +40,18 @@ class PGConector(object):
 
     def _initialize_ftp_db_connection():
         return psycopg2.connect(dbname='proftp',
-                                host='10.0.5.2',
+                                host='172.22.200.127',
                                 user='proftp_user',
                                 password='usuario')
 
     def _initialize_hosting_db_connection():
         return psycopg2.connect(dbname='db_hosting',
-                                host='10.0.5.2',
+                                host='172.22.200.127',
                                 user='admin',
                                 password='usuario')
 
     def _initialize_db_connection(db_user, db_password):
         return psycopg2.connect(dbname='postgres',
-                                host='10.0.5.2',
+                                host='172.22.200.127',
                                 user=db_user,
                                 password=db_password)
