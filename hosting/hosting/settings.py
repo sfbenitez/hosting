@@ -67,7 +67,7 @@ AUTHENTICATION_BACKENDS = [
 
 # LDAP Auth Config
 # The URL of the LDAP server.
-LDAP_AUTH_URL = "ldap://10.0.5.2:389"
+LDAP_AUTH_URL = "ldap://172.22.200.127:389"
 # Initiate TLS on connection.
 LDAP_AUTH_USE_TLS = False
 # The LDAP search base for looking up users.
@@ -119,7 +119,7 @@ DATABASES = {
         'NAME': 'db_hosting',
         'USER': 'admin',
         'PASSWORD': 'usuario',
-        'HOST': '10.0.5.2',
+        'HOST': '172.22.200.127',
         'PORT': '5432',
     }
 }

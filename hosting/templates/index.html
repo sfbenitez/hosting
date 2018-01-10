@@ -3,7 +3,7 @@
 <!--main-container-part-->
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
   </div>
   {% if request.session.admin %}
   <div class="container-fluid">
@@ -24,7 +24,7 @@
       <li class="bg_ly"> <a href="/user/ftpmanager"> <i class=" icon-folder-open"></i> File manager </a> </li>
       <li class="bg_lg"> <a href="/user/domains"> <i class="icon-globe"></i> Domains </a> </li>
       <li class="bg_lb"> <a href="/user/databases"> <i class="icon-hdd"></i> Databases </a> </li>
-      <li class="bg_lo"> <a href="#"> <i class="icon-group"></i> Profile </a> </li>
+      <li class="bg_lo"> <a href="{% url 'profile' %}"> <i class="icon-group"></i> Profile </a> </li>
       <li class="bg_ls"> <a href="/user/stats"> <i class="icon-signal"></i> Check Statistics</a> </li>
     </ul>
   </div>
