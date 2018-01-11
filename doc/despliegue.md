@@ -1,6 +1,6 @@
 # Despliegue del proyecto Django "hosting".
 
-##Python 3 virtual environment
+## Python 3 virtual environment
 ------------------------------------------------------
 Al estar utilizando la última versión de Django (2.0), para el despliegue de la aplicación necesitamos un entorno virtual de Python 3.
 Empezamos por crear el entorno virtual e inicializarlo.
@@ -18,7 +18,7 @@ cd hosting4all/
 pip install -r requirements.txt
 ```
 
-##Configuración de las conexiones con los servidores.
+## Configuración de las conexiones con los servidores.
 ------------------------------------------------------
 ### Conector.py
 
