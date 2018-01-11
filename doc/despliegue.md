@@ -111,3 +111,25 @@ Además de asignar privilegios sobre los binarios necesarios, será necesario ot
 chown :hosting /etc/apache2/sites-available
 chmod g+w /etc/apache2/sites-available
 ```
+## BIND9
+La aplicación crea nombres de dominio, solicitados por los usuarios de la aplicación. El servidor DNS que hemos usado es BIND9.
+
+### Instalación
+```
+apt install bind9
+```
+### Privilegios del usuario "hosting"
+Hemos creado el fichero /etc/bind/named.conf.hosting, en el cual añadiremos las nuevas zonas de dominio de los usuarios. Este fichero, lo incluiremos a la configuración de bind.
+
+```
+touch /etc/bind/named.conf.hosting
+chown bind:hosting /etc/bind/named.conf.hosting
+chmod 660 /etc/bind/named.conf.hosting
+```
+Lo añadimos a la configuración de Bind a través del fichero /etc/bind/named.conf.
+```
+include "/etc/bind/named.conf.options";
+include "/etc/bind/named.conf.local";
+include "/etc/bind/named.conf.default-zones";
+include "/etc/bind/named.conf.hosting";
+```
