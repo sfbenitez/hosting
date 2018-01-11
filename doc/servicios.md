@@ -1,5 +1,28 @@
 # Configuración de los servicios.
 
+## PostgreSQL
+-----------
+### Instalación del servidor PostgreSQL
+```
+apt install postgresql
+```
+Debemos habilitar el acceso a PostgreSQL a través de un socket TCP. Para ello editamos el fichero de configuración /etc/postgresql/X.X/main/pg_hba.conf, y añadimos la siguiente linea.
+```
+host    all             all             10.0.5.2/24            md5
+```
+Creación del usuario y la base de datos que usará la aplicación.
+```
+CREATE ROLE admin PASSWORD 'password' LOGIN CREATEROLE CREATEDB;
+CREATE DATABASE db_hosting OWNER admin;
+```
+Todos los usuarios de la aplicación utilizan un rol de PostgreSQL para ver las bases de datos de las cuales son propietarios.
+```
+CREATE ROLE viewdatabases;
+GRANT SELECT ON pg_database TO viewdatabases;
+GRANT SELECT ON pg_authid TO viewdatabases;
+```
+
+
 
 FTP
 ------------------------------------------------------
