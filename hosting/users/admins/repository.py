@@ -89,9 +89,12 @@ class ManageDomains(object):
         self.zonetemplate = 'admin/services/new_zone.tpl'
         #Apache Values
         self.vhostfile_dir = '/etc/apache2/sites-available/'
+        self.apache_log_dir = '/var/log/apache2/'
         self.vhosttemplate = 'admin/services/new_vhost.tpl'
         self.document_root = '/srv/hosting/' + self.app_user
-
+        #awstats values
+        self.awstats_dir = '/etc/awstats/'
+        self.awstatstemplate = 'admin/services/awstats.tpl'
 
     def _reload_services(self):
         # Needed
@@ -108,12 +111,24 @@ class ManageDomains(object):
     def _activate_vhost(self):
         os.system('sudo /usr/local/bin/a2ensite {}'.format(self.domain))
 
+    def _create_awstats_db(self):
+        os.system('/usr/lib/cgi-bin/awstats.pl -config="www.{}" -update'.format(self.domain))
+
     def _mk_vhost_config_file(self):
         context = {}
         context['server_name'] = 'www.' + self.domain
         context['document_root'] = self.document_root
+        context['app_user'] = self.app_user
         vhostfile = self.domain + '.conf'
         open(self.vhostfile_dir + vhostfile, "w").write(render_to_string(self.vhosttemplate, context))
+
+    def _mk_awstats_config_file(self):
+        context = {}
+        context['server_name'] = 'www.' + self.domain
+        context['logfile'] = self.apache_log_dir + context['server_name'] + '-access.log'
+        awstatsfile = 'awstats.' + context['server_name'] + '.conf'
+        open(self.awstats_dir + awstatsfile, "w").write(render_to_string(self.awstatstemplate, context))
+        self._create_awstats_db()
 
     def _mk_dom_config_file(self):
         context = {}
@@ -143,6 +158,7 @@ class ManageDomains(object):
         self._make_app_user_domain_relation()
         self._activate_vhost()
         self._reload_services()
+        self._mk_awstats_config_file
 
 def get_users_domains(app_user):
     user_domains = models.appuserdomains.objects.all()
