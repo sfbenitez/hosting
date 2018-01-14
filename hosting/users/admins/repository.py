@@ -144,7 +144,7 @@ class ManageDomains(object):
 
     def _add_dom_to_dns_config(self):
         zonasdns = open(self.zoneconffile,"a")
-        zona="""zone "%s" \n{\n\ttype master;\n\tfile "%s";\n};\n""" %(self.app_user,self.domain,self.zonefile,self.app_user)
+        zona="""zone "%s" \n{\n\ttype master;\n\tfile "%s";\n};\n""" %(self.domain,self.zonefile)
         zonasdns.write(zona)
         zonasdns.close()
 

@@ -10,6 +10,6 @@ $TTL	86400
 	MX  10  pandora.hosting4all.org.
 
 $ORIGIN {{domain}}.
-www	IN CNAME 10.0.5.2
+www	IN A 10.0.5.2
 ftp IN CNAME www
 postgresql IN CNAME www
