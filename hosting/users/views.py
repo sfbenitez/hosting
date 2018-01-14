@@ -39,4 +39,7 @@ def stats(request):
         'activestats' : sidebaractive,
         'currenttopmenu' : topmenu,
     }
+    app_user = request.user.username
+    listadom = repository.get_users_domains(app_user)
+    context['domain'] = 'www.' + listadom[0]
     return render(request, 'stats.html', context)

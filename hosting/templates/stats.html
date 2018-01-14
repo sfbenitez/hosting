@@ -6,6 +6,29 @@
     <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="/user/stats" class="{{currenttopmenu}}">Statistics</a></div>
     <h1>Statistics</h1>
   </div>
+  <div class="container-fluid">
+    <hr>
+
+    <div class="row-fluid">
+      <div class="span6">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-th-list"></i> </span>
+            <h5>Access Stats: </h5>
+          </div>
+          <div class="widget-content ">
+            <table class="table table-bordered table-striped with-check">
+              <tbody>
+                <tr>
+                  <td><span class="icon"> <i class="icon-globe"></i> </span><a href="http://www.{{domain}}/awstats/awstats?config={{domain}}">{{domain}}</a></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <!--end-main-container-part-->
 {% endblock %}
