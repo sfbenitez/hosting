@@ -112,7 +112,7 @@ class ManageDomains(object):
         os.system('sudo /usr/local/bin/a2ensite {}'.format(self.domain))
 
     def _create_awstats_db(self):
-        os.system('/usr/lib/cgi-bin/awstats.pl -config="www.{}" -update'.format(self.domain))
+        os.system('sudo /usr/lib/cgi-bin/awstats.pl -config=www.{} -update'.format(self.domain))
 
     def _mk_vhost_config_file(self):
         context = {}
