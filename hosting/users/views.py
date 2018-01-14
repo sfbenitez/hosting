@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from users.admins.repository import get_users_avatar
+from users.admins.repository import get_users_avatar, get_users_domains
 from users.admins.ftprepository import get_ftp_user_for_app_user
 from users.admins.dbrepository import get_db_user_for_app_user
 @login_required
@@ -40,6 +40,6 @@ def stats(request):
         'currenttopmenu' : topmenu,
     }
     app_user = request.user.username
-    listadom = repository.get_users_domains(app_user)
-    context['domain'] = 'www.' + listadom[0]
+    listadom = get_users_domains(app_user)
+    context['domain'] = listadom[0]
     return render(request, 'stats.html', context)
