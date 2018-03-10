@@ -158,7 +158,7 @@ class ManageDomains(object):
         self._make_app_user_domain_relation()
         self._activate_vhost()
         self._reload_services()
-        self._mk_awstats_config_file
+        self._mk_awstats_config_file()
 
 def get_users_domains(app_user):
     user_domains = models.appuserdomains.objects.all()
